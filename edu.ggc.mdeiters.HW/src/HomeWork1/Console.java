@@ -73,6 +73,29 @@ public class Console extends Game {
 	}
 
 	/**
+	 * Method: getSystem
+	 * @return String of the type of system
+	 */
+	@Override
+	public String getSystem() {
+		return platform;
+	}
+
+	/**
+	 * Method: toString
+	 * @return String
+	 * Description: Exporting the child's class info into a string to be read by the user
+	 */
+	@Override
+	public String toString() {
+		return "" + getName() +
+				"\nGame Inventory: " + getInventory() +
+				"\nGame ID; " + getGameId() +
+				"\nPlatform: " + platform +
+				"\nGeneration: " + generation;
+	}
+
+	/**
 	 * Method: toFile
 	 * @return String to right out to a file
 	 * Description: Creates a string to write out to a file and later read back in

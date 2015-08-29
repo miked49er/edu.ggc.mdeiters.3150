@@ -94,9 +94,23 @@ public abstract class Game {
 	}
 
 	/**
+	 * Method: getSystem
+	 * @return String of the type of system
+	 */
+	public abstract String getSystem();
+
+	/**
+	 * Method: toString
+	 * @return String
+	 * Description: Exporting the child's class info into a string to be read by the user
+	 */
+	public abstract String toString();
+
+	/**
 	 * Method: toFile
 	 * @return String
 	 * Description: Exporting the child's class info to a string
 	 */
 	public abstract String toFile();
+
 }

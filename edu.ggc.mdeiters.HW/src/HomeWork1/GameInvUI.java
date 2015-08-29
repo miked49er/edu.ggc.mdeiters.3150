@@ -7,6 +7,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
@@ -33,8 +35,8 @@ public class GameInvUI extends Application {
 
 	private final int WIDTH = 800;
 	private final int HEIGHT = 800;
-	private final int OPTIONS_WIDTH = 500;
-	private final int OPTIONS_HEIGHT = 200;
+	private final int OPTIONS_WIDTH = 375;
+	private final int OPTIONS_HEIGHT = 305;
 	private final int BUTTON_WIDTH = 100;
 	private final int BUTTON_HEIGHT = 30;
 	private final Insets DEFAULT = new Insets(10, 10, 10, 10);
@@ -68,6 +70,9 @@ public class GameInvUI extends Application {
 	private TextField searchField;
 	private Label gameLbl;
 	private Button deleteBtn;
+	private Button searchMenuBtn;
+	private BorderPane searchPane;
+	private BorderPane gameDescriptionPane;
 
 	// Classes
 
@@ -181,15 +186,50 @@ public class GameInvUI extends Application {
 
 		for ( int i = 0; i < gameList.size(); i++ ) {
 
-			gameViewList.add(new GameView(gameList.get(i)));
+			Game gameS = gameList.get(i);
+			gameViewList.add(new GameView(gameS));
 			gamesGrid.getChildren().add(gameViewList.get(i).getPane());
 
+			gameViewList.get(i).getPane().setOnMouseClicked(new EventHandler< MouseEvent >() {
+				@Override
+				public void handle( MouseEvent event ) {
+
+					openGame(gameS);
+					searchField.setText("Search by Game ID");
+
+					optionsStage.setScene(gameViewScene);
+					optionsStage.setTitle("Game Description");
+					optionsStage.show();
+
+				}
+			});
 		}
 	}
 
-//	public Game searchGames( String gameId ) {
-//
-//	}
+	public void openGame( Game game ) {
+
+		gameSelected = new GameView(game);
+		ImageView coverArt = gameSelected.getCoverArt();
+		gameDescriptionPane.setLeft(coverArt);
+		gameDescriptionPane.setRight(gameLbl);
+
+		gameLbl.setText(game.toString());
+	}
+
+	public Game searchGames( int gameId ) {
+
+		Game game = null;
+
+		for ( int i = 0; i < gameList.size(); i++ ) {
+
+			if ( gameList.get(i).getGameId() == gameId ) {
+
+				game = gameList.get(i);
+			}
+		}
+
+		return game;
+	}
 
 	/**
 	 * Method: btnActions
@@ -209,6 +249,7 @@ public class GameInvUI extends Application {
 			@Override
 			public void handle( ActionEvent event ) {
 
+				searchField.setText("Search by Game ID");
 				optionsStage.setScene(gameViewScene);
 				optionsStage.setTitle("Search");
 				optionsStage.show();
@@ -230,6 +271,26 @@ public class GameInvUI extends Application {
 				saveGames();
 				mainStage.close();
 				Platform.exit();
+			}
+		});
+
+		searchMenuBtn.setOnAction(new EventHandler< ActionEvent >() {
+			@Override
+			public void handle( ActionEvent event ) {
+
+				try {
+
+					int gameId = Integer.parseInt(searchField.getText());
+					openGame(searchGames(gameId));
+				}
+				catch ( NumberFormatException nfe ) {
+
+					searchField.setText("Invalid Game ID");
+				}
+				catch ( NullPointerException npe ) {
+
+					searchField.setText("Invalid Game ID");
+				}
 			}
 		});
 
@@ -262,12 +323,26 @@ public class GameInvUI extends Application {
 		this.deleteBtn = new Button("Delete");
 		this.gameLbl = new Label();
 		this.searchField = new TextField("Search by Game ID");
-		this.searchField.setMinHeight(40);
-		this.searchField.setMinWidth(OPTIONS_WIDTH - 20);
+		this.searchField.setMinHeight(30);
+		this.searchField.setMinWidth(OPTIONS_WIDTH - BUTTON_WIDTH - 30);
+		this.searchMenuBtn = new Button("Search");
+		this.searchMenuBtn.setMinWidth(BUTTON_WIDTH);
+		this.searchMenuBtn.setMinHeight(BUTTON_HEIGHT);
+		this.searchPane = new BorderPane();
 
-		this.gameDescription.setTop(searchField);
+		this.searchPane.setLeft(searchField);
+		this.searchPane.setRight(searchMenuBtn);
+
+		this.gameDescriptionPane = new BorderPane();
+		this.gameDescriptionPane.setPadding(new Insets(15));
+
+		this.gameDescription.setTop(searchPane);
+		this.gameDescription.setCenter(gameDescriptionPane);
 		this.gameDescription.setLeft(gameLbl);
-//		this.gameDescription.setRight(gameSelected.getCoverArt());
+
+//		searchField.setStyle("-fx-padding:15");
+		gameLbl.setStyle("-fx-padding:15");
+
 		this.gameDescription.setBottom(deleteBtn);
 	}
 
@@ -290,6 +365,7 @@ public class GameInvUI extends Application {
 			public void handle( WindowEvent event ) {
 
 				optionsStage.close();
+				refreshPage();
 			}
 		});
 

@@ -77,6 +77,29 @@ public class Mobile extends Game {
 	}
 
 	/**
+	 * Method: getSystem
+	 * @return String of the type of system
+	 */
+	@Override
+	public String getSystem() {
+		return deviceType;
+	}
+
+	/**
+	 * Method: toString
+	 * @return String
+	 * Description: Exporting the child's class info into a string to be read by the user
+	 */
+	@Override
+	public String toString() {
+		return "" + getName() +
+				"\nGame Inventory: " + getInventory() +
+				"\nGame ID; " + getGameId() +
+				"\nDevice Type: " + deviceType +
+				"\nDevice Verison: " + sdk;
+	}
+
+	/**
 	 * Method: toFile
 	 * @return String to right out to a file
 	 * Description: Creates a string to write out to a file and later read back in

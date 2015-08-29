@@ -1,7 +1,9 @@
 package HomeWork1;
 
+import javafx.event.EventHandler;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
 import java.awt.*;
@@ -79,6 +81,8 @@ public class GameView {
 
 	public ImageView getCoverArt() {
 
+		this.coverArt.setFitWidth(150);
+		this.coverArt.setFitHeight(200);
 		return coverArt;
 	}
 
