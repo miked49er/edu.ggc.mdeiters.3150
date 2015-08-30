@@ -1,6 +1,7 @@
 package HomeWork1;
 
 import java.io.File;
+import java.net.URL;
 
 /**
  * Class: GameCollect
@@ -26,10 +27,11 @@ public class GameCollect {
 
 	/**
 	 * Constructor: GameCollect
-	 * @param OS String of the OS name
 	 * Description: Determines what file system is in use
 	 */
-	public GameCollect( String OS ) throws FileMissingException {
+	public GameCollect() throws FileMissingException {
+
+		String OS = System.getProperty("os.name");
 
 		if ( OS.startsWith("Windows") ) {
 
@@ -108,9 +110,9 @@ public class GameCollect {
 
 		try {
 
-//			this.gameFile = new File(getClass().getResource("Txt\\gameList.txt").toExternalForm());
-			this.gameFile = new File("HomeWork1\\Txt\\gameList.txt");
-//			this.unknownGame = getClass().getResource("Images\\unknown.png").toExternalForm();
+			URL path = GameCollect.class.getResource("Txt\\gameList.txt");
+			this.gameFile = new File(path.getFile());
+			this.unknownGame = getClass().getResource("Images\\Unknown-Game.png").toExternalForm();
 			this.planetside2 = getClass().getResource("Images\\planetside2.jpg").toExternalForm();
 			this.leagueOfLegends = getClass().getResource("Images\\leagueOfLegends.jpg").toExternalForm();
 			this.blackOpsIII = getClass().getResource("Images\\blackOpsIII.jpg").toExternalForm();
@@ -133,9 +135,9 @@ public class GameCollect {
 
 		try {
 
-//			this.gameFile = new File(getClass().getResource("HomeWork1/Txt/gameList.txt").toExternalForm());
-			this.gameFile = new File("/home/miked49er/git/edu.ggc.mdeiters.3150/edu.ggc.mdeiters.HW/src/HomeWork1/Txt/gameList.txt");
-//			this.unknownGame = getClass().getResource("Images/unknown.png").toExternalForm();
+			URL path = GameCollect.class.getResource("Txt/gameList.txt");
+			this.gameFile = new File(path.getFile());
+			this.unknownGame = getClass().getResource("Images/Unknown-Game.png").toExternalForm();
 			this.planetside2 = getClass().getResource("Images/planetside2.jpg").toExternalForm();
 			this.leagueOfLegends = getClass().getResource("Images/leagueOfLegends.jpg").toExternalForm();
 			this.blackOpsIII = getClass().getResource("Images/blackOpsIII.jpg").toExternalForm();

@@ -89,10 +89,10 @@ public class Console extends Game {
 	@Override
 	public String toString() {
 		return "" + getName() +
-				"\nGame Inventory: " + getInventory() +
-				"\nGame ID; " + getGameId() +
-				"\nPlatform: " + platform +
-				"\nGeneration: " + generation;
+				"\n\nGame Inventory:\t" + getInventory() +
+				"\nGame ID;\t\t\t" + getGameId() +
+				"\n\nPlatform:\t\t\t" + platform +
+				"\nGeneration:\t\t" + generation;
 	}
 
 	/**

@@ -88,10 +88,11 @@ public class PC extends Game {
 	@Override
 	public String toString() {
 		return "" + getName() +
-				"\nGame Inventory: " + getInventory() +
-				"\nGame ID; " + getGameId() +
-				"\nMinimum Memory\nRequirement: " + minMemoryReq +
-				"\nMinimum Disk Space\nRequirement: " + minDiskReq;
+				"\n\nInventory:\t" + getInventory() +
+				"\nID;\t\t\t" + getGameId() +
+				"\n\nMinimum Required Specs:" +
+				"\n\nRAM:\t\t" + minMemoryReq + " MB" +
+				"\nDisk Space:\t" + minDiskReq + " GB";
 	}
 
 	/**

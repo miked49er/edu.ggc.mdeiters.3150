@@ -93,10 +93,10 @@ public class Mobile extends Game {
 	@Override
 	public String toString() {
 		return "" + getName() +
-				"\nGame Inventory: " + getInventory() +
-				"\nGame ID; " + getGameId() +
-				"\nDevice Type: " + deviceType +
-				"\nDevice Verison: " + sdk;
+				"\n\nGame Inventory:\t" + getInventory() +
+				"\nGame ID;\t\t\t" + getGameId() +
+				"\n\nDevice Type:\t\t" + deviceType +
+				"\nDevice Verison:\t" + sdk;
 	}
 
 	/**
