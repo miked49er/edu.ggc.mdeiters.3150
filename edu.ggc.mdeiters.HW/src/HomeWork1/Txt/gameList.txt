@@ -1,0 +1,6 @@
+PC,Planetside 2,5,1001,1024,12
+PC,League Of Legends,100,1002,2024,10
+Console,Black Ops III,32,2001,Xbox,One
+Console,The Crew,2,2002,Playstation,4
+Mobile,Minecraft,49,3001,Android,5.1
+Mobile,Monument Valley,23,3002,iPhone,9
