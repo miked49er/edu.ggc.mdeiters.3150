@@ -94,7 +94,7 @@ public class Mobile extends Game {
 	public String toString() {
 		return "" + getName() +
 				"\n\nGame Inventory:\t" + getInventory() +
-				"\nGame ID;\t\t\t" + getGameId() +
+				"\nGame ID:\t\t\t" + getGameId() +
 				"\n\nDevice Type:\t\t" + deviceType +
 				"\nDevice Verison:\t" + sdk;
 	}

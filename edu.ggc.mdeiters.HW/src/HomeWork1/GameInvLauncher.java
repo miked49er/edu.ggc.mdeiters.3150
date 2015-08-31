@@ -20,7 +20,7 @@ public class GameInvLauncher {
 	 * @param args
 	 * @return void
 	 */
-	public static void main(String[] args) {
+	public static void main( String[] args ) {
 
 		Application.launch(GameInvUI.class);
 	}

@@ -99,21 +99,21 @@ public class GameView {
 
 	/**
 	 * Method: setCoverArt
+	 * @param coverArt String of the coverArt file
+	 */
+	public void setCoverArt( String coverArt ) {
+
+		this.coverArt = new ImageView(coverArt);
+	}
+
+	/**
+	 * Method: setCoverArt
 	 * @param coverArt ImageView of the coverArt
 	 */
 	public void setCoverArt( ImageView coverArt ) {
 
 		this.coverArt = coverArt;
 
-	}
-
-	/**
-	 * Method: setCoverArt
-	 * @param coverArt String of the coverArt file
-	 */
-	public void setCoverArt( String coverArt ) {
-
-		this.coverArt = new ImageView(coverArt);
 	}
 
 	/**

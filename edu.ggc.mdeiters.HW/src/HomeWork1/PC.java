@@ -89,7 +89,7 @@ public class PC extends Game {
 	public String toString() {
 		return "" + getName() +
 				"\n\nInventory:\t" + getInventory() +
-				"\nID;\t\t\t" + getGameId() +
+				"\nID:\t\t\t" + getGameId() +
 				"\n\nMinimum Required Specs:" +
 				"\n\nRAM:\t\t" + minMemoryReq + " MB" +
 				"\nDisk Space:\t" + minDiskReq + " GB";

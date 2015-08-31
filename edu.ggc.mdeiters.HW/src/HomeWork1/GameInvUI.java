@@ -295,9 +295,8 @@ public class GameInvUI extends Application {
 		Game game = null;
 
 		// Loop through gameList to see if any of the games in the list of a matching gameId
-		// Exit if game is no longer null
 
-		for ( int i = 0; game != null && i < gameList.size(); i++ ) {
+		for ( int i = 0; i < gameList.size(); i++ ) {
 
 			if ( gameList.get(i).getGameId() == gameId ) { // If gameId matches then set game to the game that matches
 

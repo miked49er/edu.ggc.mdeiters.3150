@@ -90,7 +90,7 @@ public class Console extends Game {
 	public String toString() {
 		return "" + getName() +
 				"\n\nGame Inventory:\t" + getInventory() +
-				"\nGame ID;\t\t\t" + getGameId() +
+				"\nGame ID:\t\t\t" + getGameId() +
 				"\n\nPlatform:\t\t\t" + platform +
 				"\nGeneration:\t\t" + generation;
 	}
