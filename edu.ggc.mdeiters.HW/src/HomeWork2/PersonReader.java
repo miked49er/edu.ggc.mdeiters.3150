@@ -1,4 +1,4 @@
-package HomeWork2;
+//package HomeWork2;
 
 import java.io.*;
 import java.util.HashSet;
@@ -11,48 +11,71 @@ import java.util.Iterator;
  * September 03, 2015
  * ITEC 3150-01
  *
- * Description: TODO
+ * Description: Read in Person objects to a hashset
  *
- * Purpose: TODO
+ * Purpose: Read and Write Binary files
  */
 public class PersonReader {
 
     private File file;
-    private HashSet< Person > people;
+    private HashSet< String > people;
 
+    /**
+     * Constructor: PersonReader
+     * @param file
+     */
     public PersonReader( File file ) {
         this.file = file;
-        this.people = new HashSet< Person >();
+        this.people = new HashSet<>();
     }
 
-    public HashSet< Person > readPeople() throws ClassNotFoundException, IOException {
+    /**
+     * Method: readPeople
+     * @return people HastSet of firstNames
+     * @throws ClassNotFoundException
+     * @throws IOException
+     * Description: Reads the binary files into a HashSet
+     */
+    public HashSet< String > readPeople() throws ClassNotFoundException, IOException {
 
         try {
 
+            // Creates an ObjectInputStream from the FileInputStream
+
             ObjectInputStream dis = new ObjectInputStream(new FileInputStream(file));
 
-            while ( true ) {
+            while ( true ) { // Until am EOFException is thrown read another object to people
 
-                people.add((Person) ( dis.readObject() ));
+                Person person = (Person) dis.readObject();
+                people.add(person.getFirstName());
             }
         }
         catch ( EOFException eof ) {
 
-            System.out.println("Finished Reading");
+            // The file is finished being read in
         }
 
         return people;
     }
 
+    /**
+     * Method: writeNames
+     * @throws IOException
+     * Description: Writes the first names of the people in the HashSet to a binary file
+     */
     public void writeNames() throws IOException {
+
+        // Creates a DataOuptutStream from the FileInputStream
 
         DataOutputStream dos = new DataOutputStream(new FileOutputStream("firstNames.dat"));
 
-        Iterator< Person > iter = people.iterator();
+        // Create an iterator to scan through the HashSet
 
-        while ( iter.hasNext() ) {
+        Iterator< String > iter = people.iterator();
 
-            dos.writeUTF(iter.next().firstName);
+        while ( iter.hasNext() ) { // Until iter has reached the end of the HashSet keep writing out firstNames
+
+            dos.writeUTF(iter.next());
         }
     }
 }
