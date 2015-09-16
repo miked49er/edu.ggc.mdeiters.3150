@@ -1,5 +1,6 @@
 package Hashmap;
 
+import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /**
@@ -25,7 +26,20 @@ public class LinkedList
 	 */
 	public void transferFrom(LinkedList otherList)
 	{
-		
+		LinkedListIterator<LinkedList> iter = otherList.listIterator();
+		LinkedList temp = new LinkedList();
+
+		while ( iter.hasNext() ) {
+
+			temp.add(iter.next());
+			iter.remove();
+		}
+
+		iter = temp.listIterator();
+		while ( iter.hasNext() ) {
+
+			addFirst(iter.next());
+		}
 	
 	}
 	
