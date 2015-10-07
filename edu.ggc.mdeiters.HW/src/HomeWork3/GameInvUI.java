@@ -35,945 +35,1003 @@ import java.util.Optional;
  */
 public class GameInvUI extends Application {
 
-	// Variables
-
-	private final int WIDTH = 900;
-	private final int HEIGHT = 725;
-	private final int OPTIONS_WIDTH = 450;
-	private final int OPTIONS_HEIGHT = 305;
-	private final int NEW_GAME_WIDTH = 370;
-	private final int NEW_GAME_HEIGHT = 410;
-	private final int BUTTON_WIDTH = 100;
-	private final int BUTTON_HEIGHT = 30;
-	private final Insets DEFAULT = new Insets(10, 10, 10, 10);
-
-	// Main Scene
-
-	private final ToggleGroup rbGroup = new ToggleGroup();
-	private BorderPane pane;
-	private Scene scene;
-	private Stage mainStage;
-	private FlowPane gamesGrid;
-	private ScrollPane gridScroll;
-	private BorderPane optionsGridPane;
-	private GridPane optionsGrid;
-	private Label errorLbl;
-	private ArrayList< GameView > gameViewList;
-	private ArrayList< Game > gameList;
-	private Button newGameBtn;
-	private Button searchBtn;
-	private Button saveBtn;
+    // Variables
+
+    private final int WIDTH = 900;
+    private final int HEIGHT = 725;
+    private final int OPTIONS_WIDTH = 450;
+    private final int OPTIONS_HEIGHT = 305;
+    private final int NEW_GAME_WIDTH = 370;
+    private final int NEW_GAME_HEIGHT = 410;
+    private final int BUTTON_WIDTH = 100;
+    private final int BUTTON_HEIGHT = 30;
+    private final Insets DEFAULT = new Insets(10, 10, 10, 10);
+    private final int PREORDER = 1;
+    private final int INORDER = 2;
+    private final int POSTORDER = 3;
+
+    // Main Scene
+
+    private final ToggleGroup rbGroup = new ToggleGroup();
+    private BorderPane pane;
+    private Scene scene;
+    private Stage mainStage;
+    private FlowPane gamesGrid;
+    private ScrollPane gridScroll;
+    private BorderPane optionsGridPane;
+    private GridPane optionsGrid;
+    private Label errorLbl;
+    private ArrayList< GameView > gameViewList;
+    private ArrayList< Game > gameList;
+    private GameTree gameTree;
+    private Button newGameBtn;
+    private Button searchBtn;
+    private Button saveBtn;
+    private Button preOrderBtn;
+    private Button inOrderBtn;
+    private Button postOrderBtn;
+    private int order = 1;
+
+    // Menus
+
+    private Button exitBtn;
+    private BorderPane gameOptions;
+    private BorderPane gameDescription;
+    private Scene gameViewScene;
+    private Scene gameOptionsScene;
+    private Stage optionsStage;
+    private TextField searchField;
+    private Label gameLbl;
+    private Button deleteBtn;
+    private Button searchMenuBtn;
+    private BorderPane searchPane;
+    private BorderPane gameDescriptionPane;
+
+    // New Game
+
+    private Scene newGameScene;
+    private Stage newGameStage;
+    private GridPane newGameGridPane;
+    private RadioButton pcBtn;
+    private RadioButton consoleBtn;
+    private RadioButton mobileBtn;
+    private Button submit;
+    private Label gameNameLbl;
+    private Label gameInventoryLbl;
+    private Label gameParam1Lbl;
+    private Label gameParam2Lbl;
+    private Label newGameError;
+    private TextField gameNameField;
+    private TextField gameInventoryField;
+    private TextField gameParam1Field;
+    private TextField gameParam2Field;
+
+    // Classes
 
-	// Menus
+    private GameCollect gameCollect;
+    private Game gameSelected;
 
-	private Button exitBtn;
-	private BorderPane gameOptions;
-	private BorderPane gameDescription;
-	private Scene gameViewScene;
-	private Scene gameOptionsScene;
-	private Stage optionsStage;
-	private TextField searchField;
-	private Label gameLbl;
-	private Button deleteBtn;
-	private Button searchMenuBtn;
-	private BorderPane searchPane;
-	private BorderPane gameDescriptionPane;
+    /**
+     * Method: collectGames
+     * @return void
+     * Description: Reads in all of the game from the file
+     */
+    public void collectGames() {
 
-	// New Game
+        ReadFile rf = new ReadFile();
 
-	private Scene newGameScene;
-	private Stage newGameStage;
-	private GridPane newGameGridPane;
-	private RadioButton pcBtn;
-	private RadioButton consoleBtn;
-	private RadioButton mobileBtn;
-	private Button submit;
-	private Label gameNameLbl;
-	private Label gameInventoryLbl;
-	private Label gameParam1Lbl;
-	private Label gameParam2Lbl;
-	private Label newGameError;
-	private TextField gameNameField;
-	private TextField gameInventoryField;
-	private TextField gameParam1Field;
-	private TextField gameParam2Field;
+        try {
 
-	// Classes
+            // Locates the gameList file and reads it in to an arraylist
 
-	private GameCollect gameCollect;
-	private Game gameSelected;
+            this.gameCollect = new GameCollect();
+            rf.readFile(this.gameCollect.getGameFile());
 
-	/**
-	 * Method: collectGames
-	 * @return void
-	 * Description: Reads in all of the game from the file
-	 */
-	public void collectGames() {
+            // Retrieve the arraylist of the game information
 
-		ReadFile rf = new ReadFile();
+            ArrayList< String > list = rf.getFileList();
 
-		try {
+            for ( int i = 0; i < list.size(); i++ ) { // Loop through the list and parse the data into game data
 
-			// Locates the gameList file and reads it in to an arraylist
+                String gameStream = list.get(i);
 
-			this.gameCollect = new GameCollect();
-			rf.readFile(this.gameCollect.getGameFile());
+                String system = gameStream.substring(0, gameStream.indexOf(',' ));
+                gameStream = gameStream.substring(gameStream.indexOf(',' ) + 1);
 
-			// Retrieve the arraylist of the game information
+                String name = gameStream.substring(0, gameStream.indexOf(',' ));
+                gameStream = gameStream.substring(gameStream.indexOf(',' ) + 1);
 
-			ArrayList< String > list = rf.getFileList();
+                String inventory = gameStream.substring(0, gameStream.indexOf(',' ));
+                gameStream = gameStream.substring(gameStream.indexOf(',' ) + 1);
 
-			for ( int i = 0; i < list.size(); i++ ) { // Loop through the list and parse the data into game data
+                String id = gameStream.substring(0, gameStream.indexOf(',' ));
+                gameStream = gameStream.substring(gameStream.indexOf(',' ) + 1);
 
-				String gameStream = list.get(i);
+                String param1 = gameStream.substring(0, gameStream.indexOf(',' ));
+                gameStream = gameStream.substring(gameStream.indexOf(',' ) + 1);
 
-				String system = gameStream.substring(0, gameStream.indexOf(','));
-				gameStream = gameStream.substring(gameStream.indexOf(',') + 1);
+                String param2 = gameStream;
 
-				String name = gameStream.substring(0, gameStream.indexOf(','));
-				gameStream = gameStream.substring(gameStream.indexOf(',') + 1);
+                switch ( system ) { // Create the new game and add it to the gameList based on the game system
 
-				String inventory = gameStream.substring(0, gameStream.indexOf(','));
-				gameStream = gameStream.substring(gameStream.indexOf(',') + 1);
+                    case "PC": // PC Games
 
-				String id = gameStream.substring(0, gameStream.indexOf(','));
-				gameStream = gameStream.substring(gameStream.indexOf(',') + 1);
+                        this.gameTree.add(new PC(name, Integer.parseInt(inventory), Integer.parseInt(id), Integer.parseInt(param1), Integer.parseInt(param2)));
+                        break;
 
-				String param1 = gameStream.substring(0, gameStream.indexOf(','));
-				gameStream = gameStream.substring(gameStream.indexOf(',') + 1);
+                    case "Console": // Console Games
 
-				String param2 = gameStream;
+                        this.gameTree.add(new Console(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, param2));
+                        break;
 
-				switch ( system ) { // Create the new game and add it to the gameList based on the game system
+                    case "Mobile": // Mobile Games
 
-					case "PC": // PC Games
+                        this.gameTree.add(new Mobile(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, Double.parseDouble(param2)));
+                        break;
 
-						this.gameList.add(new PC(name, Integer.parseInt(inventory), Integer.parseInt(id), Integer.parseInt(param1), Integer.parseInt(param2)));
-						break;
+                    default: // Default show an error message
 
-					case "Console": // Console Games
+                        errorLbl.setText("Game information is missing.");
 
-						this.gameList.add(new Console(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, param2));
-						break;
+                        // Set i to the size of list so the loop will end due to an error
 
-					case "Mobile": // Mobile Games
+                        i = list.size();
+                }
+            }
+        }
+        catch ( FileMissingException fme ) { // File can not be found
 
-						this.gameList.add(new Mobile(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, Double.parseDouble(param2)));
-						break;
+            errorLbl.setText(fme.getMessage());
+        }
+        catch ( NullPointerException npe ) { // Do nothing of null
 
-					default: // Default show an error message
+        }
+        catch ( StringIndexOutOfBoundsException sib ) { // Data is corrupted if information is missing
 
-						errorLbl.setText("Game information is missing.");
+            errorLbl.setText("Game Data is corrupted.");
+        }
 
-						// Set i to the size of list so the loop will end due to an error
+        refreshPage();
+    }
 
-						i = list.size();
-				}
-			}
-		}
-		catch ( FileMissingException fme ) { // File can not be found
+    /**
+     * Method: saveGames
+     * @return void
+     * Description: Write out the games to a file
+     */
+    public void saveGames() {
 
-			errorLbl.setText(fme.getMessage());
-		}
-		catch ( NullPointerException npe ) { // Do nothing of null
+        try {
 
-		}
-		catch ( StringIndexOutOfBoundsException sib ) { // Data is corrupted if information is missing
+            ArrayList< String > gameStringList = new ArrayList< String >();
+            gameList.clear();
 
-			errorLbl.setText("Game Data is corrupted.");
-		}
+            gameList = gameTree.getPreOrder();
 
-		refreshPage();
-	}
+            for ( int i = 0; i < gameList.size(); i++ ) { // Adds all of the gameList game's toFile to gameStringList
 
-	/**
-	 * Method: saveGames
-	 * @return void
-	 * Description: Write out the games to a file
-	 */
-	public void saveGames() {
+                gameStringList.add(gameList.get(i).toFile());
+            }
 
-		try {
+            // Write the games out to the file
 
-			ArrayList< String > gameStringList = new ArrayList< String >();
+            WriteFile wf = new WriteFile(gameStringList, gameCollect.getGameFile());
 
-			for ( int i = 0; i < gameList.size(); i++ ) { // Adds all of the gameList game's toFile to gameStringList
+        }
+        catch ( FileMissingException fme ) { // File to right to is missing
 
-				gameStringList.add(gameList.get(i).toFile());
-			}
+            errorLbl.setText(fme.getMessage());
+        }
+        catch ( NullPointerException npe ) { // Do nothing if null
 
-			// Write the games out to the file
+        }
+    }
 
-			WriteFile wf = new WriteFile(gameStringList, gameCollect.getGameFile());
+    /**
+     * Method: refreshPage
+     * @return void
+     * Description: Unload all of the GaveViews from the gameGrid
+     * 		Create new the GameViews from the games in gameList
+     * 		Load the GameViews to the gameGrid
+     */
+    public void refreshPage() {
 
-		}
-		catch ( FileMissingException fme ) { // File to right to is missing
+        // Clear GameViews
 
-			errorLbl.setText(fme.getMessage());
-		}
-		catch ( NullPointerException npe ) { // Do nothing if null
+        gameList.clear();
+        gameViewList.clear();
+        gamesGrid.getChildren().clear();
 
-		}
-	}
+        if ( order == 1 ) { // PreOrder
 
-	/**
-	 * Method: refreshPage
-	 * @return void
-	 * Description: Unload all of the GaveViews from the gameGrid
-	 * 		Create new the GameViews from the games in gameList
-	 * 		Load the GameViews to the gameGrid
-	 */
-	public void refreshPage() {
+            gameList = gameTree.getPreOrder();
+        }
+        else if ( order == 2 ) { // InOrder
 
-		// Clear GameViews
+            gameList = gameTree.getInOrder();
+        }
+        else if ( order == 3 ) { // PostOrder
 
-		gameViewList.clear();
-		gamesGrid.getChildren().clear();
+            gameList = gameTree.getPostOrder();
+        }
 
-		for ( int i = 0; i < gameList.size(); i++ ) { // Loop through gameList to create new GameViews
+        for ( int i = 0; i < gameList.size(); i++ ) { // Loop through gameList to create new GameViews
 
-			Game gameS = gameList.get(i);
+            Game gameS = gameList.get(i);
 
-			// Create the new GameView
-			// Add GameView to the gamesGrid
+            // Create the new GameView
+            // Add GameView to the gamesGrid
 
-			gameViewList.add(new GameView(gameS));
-			gamesGrid.getChildren().add(gameViewList.get(i).getPane());
+            gameViewList.add(new GameView(gameS));
+            gamesGrid.getChildren().add(gameViewList.get(i).getPane());
 
-			gameViewList.get(i).getPane().setOnMouseClicked(new EventHandler< MouseEvent >() { // Set and eventHandler to the GameView to load the description of the game
-				@Override
-				public void handle( MouseEvent event ) {
+            gameViewList.get(i).getPane().setOnMouseClicked(new EventHandler< MouseEvent >() { // Set and eventHandler to the GameView to load the description of the game
+                @Override
+                public void handle( MouseEvent event ) {
 
-					openGame(gameS);
-					searchField.setText("Search by Game ID");
+                    openGame(gameS);
+                    searchField.setText("Search by Game ID");
 
-					optionsStage.setScene(gameViewScene);
-					optionsStage.setTitle("Game Description");
-					optionsStage.show();
+                    optionsStage.setScene(gameViewScene);
+                    optionsStage.setTitle("Game Description");
+                    optionsStage.show();
 
-				}
-			});
-		}
-	}
+                }
+            });
+        }
+    }
 
-	/**
-	 * Method: openGame
-	 * @param game Game to open in the description View
-	 */
-	public void openGame( Game game ) {
+    /**
+     * Method: openGame
+     * @param game Game to open in the description View
+     */
+    public void openGame( Game game ) {
 
-		try {
+        try {
 
-			// Set the gameSelected to the game to be viewed
+            // Set the gameSelected to the game to be viewed
 
-			gameSelected = game;
+            gameSelected = game;
 
-			// Create a temp GameView to get the game's coverArt
-			GameView gameSelectedV = new GameView(game);
-			ImageView coverArt = gameSelectedV.getCoverArt();
+            // Create a temp GameView to get the game's coverArt
+            GameView gameSelectedV = new GameView(game);
+            ImageView coverArt = gameSelectedV.getCoverArt();
 
-			gameDescriptionPane.setLeft(coverArt);
-			gameDescriptionPane.setRight(gameLbl);
+            gameDescriptionPane.setLeft(coverArt);
+            gameDescriptionPane.setRight(gameLbl);
 
-			// Retrieve the Game's toString for the information about the game
+            // Retrieve the Game's toString for the information about the game
 
-			gameLbl.setText(game.toString());
-		}
-		catch ( FileMissingException fme ) { // Do nothing if file is missing
+            gameLbl.setText(game.toString());
+        }
+        catch ( FileMissingException fme ) { // Do nothing if file is missing
 
-		}
-	}
+        }
+    }
 
-	/**
-	 * Method: searchGames
-	 * @param gameId int of a gameId to search for
-	 * @return game Game that the user was looking for
-	 */
-	public Game searchGames( int gameId ) {
+    /**
+     * Method: searchGames
+     * @param gameId int of a gameId to search for
+     * @return game Game that the user was looking for
+     */
+    public Game searchGames( int gameId ) {
 
-		// Create a null Game to return if the search doesn't find a game with a matching Id
-		Game game = null;
+        // Create a null Game to return if the search doesn't find a game with a matching Id
+        Game game = null;
 
-		// Loop through gameList to see if any of the games in the list of a matching gameId
+        // Loop through gameList to see if any of the games in the list of a matching gameId
 
-		for ( int i = 0; i < gameList.size(); i++ ) {
+        for ( int i = 0; i < gameList.size(); i++ ) {
 
-			if ( gameList.get(i).getGameId() == gameId ) { // If gameId matches then set game to the game that matches
+            if ( gameList.get(i).getGameId() == gameId ) { // If gameId matches then set game to the game that matches
 
-				game = gameList.get(i);
-			}
-		}
+                game = gameList.get(i);
+            }
+        }
 
-		return game;
-	}
+        return game;
+    }
 
-	/**
-	 * Method: btnActions
-	 * @return void
-	 * Description: Handle all of the button actions
-	 */
-	public void btnActions() {
+    /**
+     * Method: btnActions
+     * @return void
+     * Description: Handle all of the button actions
+     */
+    public void btnActions() {
 
-		// Displays the newGame dialog
+        // Displays the newGame dialog
 
-		newGameBtn.setOnAction(new EventHandler< ActionEvent >() {
-			@Override
-			public void handle( ActionEvent event ) {
+        newGameBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-				newGame();
-			}
-		});
+                newGame();
+            }
+        });
 
-		// Displays the search/gameDescription dialog
+        // Displays the search/gameDescription dialog
 
-		searchBtn.setOnAction(new EventHandler< ActionEvent >() {
-			@Override
-			public void handle( ActionEvent event ) {
+        searchBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-				searchField.setText("Search by Game ID");
-				optionsStage.setScene(gameViewScene);
-				optionsStage.setTitle("Search");
-				optionsStage.show();
-			}
-		});
+                searchField.setText("Search by Game ID");
+                optionsStage.setScene(gameViewScene);
+                optionsStage.setTitle("Search");
+                optionsStage.show();
+            }
+        });
 
-		// Saves the games
+        // Saves the games
 
-		saveBtn.setOnAction(new EventHandler< ActionEvent >() {
-			@Override
-			public void handle( ActionEvent event ) {
+        saveBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-				saveGames();
-			}
-		});
+                saveGames();
+            }
+        });
 
-		// Saves the games and closes all stages
+        // Set order to preorder
 
-		exitBtn.setOnAction(new EventHandler< ActionEvent >() {
-			@Override
-			public void handle( ActionEvent event ) {
+        preOrderBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-				saveGames();
-				newGameStage.close();
-				optionsStage.close();
-				mainStage.close();
-				Platform.exit();
-			}
-		});
+                // Reorder the games
 
-		// Calls the search function with the data the user entered via a Mouse Click
+                order = PREORDER;
+                refreshPage();
+            }
+        });
 
-		searchMenuBtn.setOnAction(new EventHandler< ActionEvent >() {
-			@Override
-			public void handle( ActionEvent event ) {
+        // Set order to inorder
 
-				try {
+        inOrderBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-					int gameId = Integer.parseInt(searchField.getText());
-					openGame(searchGames(gameId));
-				}
-				catch ( NumberFormatException nfe ) { // Prompts the user to enter a number
+                // Reorder the games
 
-					searchField.setText("Invalid Game ID");
-				}
-				catch ( NullPointerException npe ) { // Prompts the user to enter a number
+                order = INORDER;
+                refreshPage();
+            }
+        });
 
-					searchField.setText("Invalid Game ID");
-				}
-			}
-		});
+        // Set order to postorder
 
-		// Calls the search function with the data the user entered via pressing the ENTER key
+        postOrderBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-		searchField.setOnKeyPressed(new EventHandler< KeyEvent >() {
-			@Override
-			public void handle( KeyEvent event ) {
+                // Reorder the games
 
-				if ( event.getCode() == KeyCode.ENTER ) { // Checks to see if the ENTER key has been pressed
+                order = POSTORDER;
+                refreshPage();
+            }
+        });
 
-					try {
+        // Saves the games and closes all stages
 
-						int gameId = Integer.parseInt(searchField.getText());
-						openGame(searchGames(gameId));
-					}
-					catch ( NumberFormatException nfe ) { // Prompts the user to enter a number
+        exitBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-						searchField.setText("Invalid Game ID");
-					}
-					catch ( NullPointerException npe ) { // Prompts the user to enter a number
+                saveGames();
+                newGameStage.close();
+                optionsStage.close();
+                mainStage.close();
+                Platform.exit();
+            }
+        });
 
-						searchField.setText("Invalid Game ID");
-					}
-				}
-			}
-		});
+        // Calls the search function with the data the user entered via a Mouse Click
 
-		// Deletes the selected game
+        searchMenuBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-		deleteBtn.setOnAction(new EventHandler< ActionEvent >() {
-			@Override
-			public void handle( ActionEvent event ) {
+                try {
 
-				// Alert to confirm the deletion of the game
+                    int gameId = Integer.parseInt(searchField.getText());
+                    openGame(searchGames(gameId));
+                }
+                catch ( NumberFormatException nfe ) { // Prompts the user to enter a number
 
-				Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-				alert.setTitle("Delete Confirmation");
-				alert.setHeaderText("Are you sure you want to delete this?");
-				alert.setContentText("This will pernamently delete this game.");
+                    searchField.setText("Invalid Game ID");
+                }
+                catch ( NullPointerException npe ) { // Prompts the user to enter a number
 
-				Optional< ButtonType > result = alert.showAndWait();
+                    searchField.setText("Invalid Game ID");
+                }
+            }
+        });
 
-				if ( result.get() == ButtonType.OK ) {
+        // Calls the search function with the data the user entered via pressing the ENTER key
 
-					// If the user presses ok
+        searchField.setOnKeyPressed(new EventHandler< KeyEvent >() {
+            @Override
+            public void handle( KeyEvent event ) {
 
-					boolean gameFound = false;
+                if ( event.getCode() == KeyCode.ENTER ) { // Checks to see if the ENTER key has been pressed
 
-					// Loop through gameList until the game to delete is found
-					// Once found it deletes the game from gameList
+                    try {
 
-					for ( int i = 0; !gameFound && i < gameList.size(); i++ ) {
+                        int gameId = Integer.parseInt(searchField.getText());
+                        openGame(searchGames(gameId));
+                    }
+                    catch ( NumberFormatException nfe ) { // Prompts the user to enter a number
 
-						if ( gameList.get(i).getGameId() == gameSelected.getGameId() ) {
+                        searchField.setText("Invalid Game ID");
+                    }
+                    catch ( NullPointerException npe ) { // Prompts the user to enter a number
 
-							gameFound = true;
-							gameList.remove(i);
-							refreshPage();
-							optionsStage.close();
-						}
-					}
-				}
-				else {
+                        searchField.setText("Invalid Game ID");
+                    }
+                }
+            }
+        });
 
-					// If the user pressed cancel or closed the dialog
-					// Do nothing
+        // Deletes the selected game
 
-				}
-			}
-		});
+        deleteBtn.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-		// Using the user entered data it attempts to create a new game
+                // Alert to confirm the deletion of the game
 
-		submit.setOnAction(new EventHandler< ActionEvent >() {
-			@Override
-			public void handle( ActionEvent event ) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setTitle("Delete Confirmation");
+                alert.setHeaderText("Are you sure you want to delete this?");
+                alert.setContentText("This will pernamently delete this game.");
 
-				// Clears the errror entry
+                Optional< ButtonType > result = alert.showAndWait();
 
-				newGameError.setText("");
+                if ( result.get() == ButtonType.OK ) {
 
-				try {
+                    // If the user presses ok
 
-					Game game = null;
+                    if ( gameTree.remove(gameSelected) ) {
+                        refreshPage();
+                        optionsStage.close();
+                    }
+                }
+                else {
 
-					// Parses the user data into variables
+                    // If the user pressed cancel or closed the dialog
+                    // Do nothing
 
-					String name = gameNameField.getText();
-					int inv = Integer.parseInt(gameInventoryField.getText());
-					String param1 = gameParam1Field.getText();
-					String param2 = gameParam2Field.getText();
+                }
+            }
+        });
 
-					// Default GameID values
+        // Using the user entered data it attempts to create a new game
 
-					int pcID = 1000;
-					int consoleID = 2000;
-					int mobileID = 3000;
+        submit.setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
 
-					for ( int i = 0; i < gameList.size(); i++ ) { // Update the GameID's to be the highest current GameID in each category
+                // Clears the errror entry
 
-						int tempID = gameList.get(i).getGameId();
+                newGameError.setText("");
 
-						if ( tempID >= 1000 && tempID < 2000 ) { // PC GameID Range
+                try {
 
-							if ( tempID > pcID ) {
+                    Game game = null;
 
-								pcID = tempID;
-							}
-						}
-						else if ( tempID >= 2000 && tempID < 3000 ) { // Console GameID Range
+                    // Parses the user data into variables
 
-							if ( tempID > consoleID ) {
+                    String name = gameNameField.getText();
+                    int inv = Integer.parseInt(gameInventoryField.getText());
+                    String param1 = gameParam1Field.getText();
+                    String param2 = gameParam2Field.getText();
 
-								consoleID = tempID;
-							}
-						}
-						else if ( tempID >= 3000 && tempID < 4000 ) { // Mobile GameID Range
+                    // Default GameID values
 
-							if ( tempID > mobileID ) {
+                    int pcID = 1000;
+                    int consoleID = 2000;
+                    int mobileID = 3000;
 
-								mobileID = tempID;
-							}
-						}
+                    for ( int i = 0; i < gameList.size(); i++ ) { // Update the GameID's to be the highest current GameID in each category
 
-					}
+                        int tempID = gameList.get(i).getGameId();
 
-					// Increment all GameIDs up one
+                        if ( tempID >= 1000 && tempID < 2000 ) { // PC GameID Range
 
-					pcID++;
-					consoleID++;
-					mobileID++;
+                            if ( tempID > pcID ) {
 
-					if ( rbGroup.getSelectedToggle() == pcBtn ) { // Create a new PC Game
+                                pcID = tempID;
+                            }
+                        }
+                        else if ( tempID >= 2000 && tempID < 3000 ) { // Console GameID Range
 
-						game = new PC(name, inv, pcID, Integer.parseInt(param1), Integer.parseInt(param2));
+                            if ( tempID > consoleID ) {
 
-					}
-					else if ( rbGroup.getSelectedToggle() == consoleBtn ) { // Create a new Console Game
+                                consoleID = tempID;
+                            }
+                        }
+                        else if ( tempID >= 3000 && tempID < 4000 ) { // Mobile GameID Range
 
-						game = new Console(name, inv, consoleID, param1, param2);
+                            if ( tempID > mobileID ) {
 
-					}
-					else if ( rbGroup.getSelectedToggle() == mobileBtn ) { // Create a new Mobile Game
+                                mobileID = tempID;
+                            }
+                        }
 
-						game = new Mobile(name, inv, mobileID, param1, Double.parseDouble(param2));
+                    }
 
-					}
+                    // Increment all GameIDs up one
 
-					boolean gameExists = false;
+                    pcID++;
+                    consoleID++;
+                    mobileID++;
 
-					for ( int i = 0; i < gameList.size(); i++ ) { // Checks to see if the game already exists on this platform
+                    if ( rbGroup.getSelectedToggle() == pcBtn ) { // Create a new PC Game
 
-						if ( name.equalsIgnoreCase(gameList.get(i).getName()) ) { // Checks for the same name
+                        game = new PC(name, inv, pcID, Integer.parseInt(param1), Integer.parseInt(param2));
 
-							if ( game.getSystem().equals(gameList.get(i).getSystem()) ) { // If they have the same name then check if same platform
+                    }
+                    else if ( rbGroup.getSelectedToggle() == consoleBtn ) { // Create a new Console Game
 
-								// Set gameExists to true;
+                        game = new Console(name, inv, consoleID, param1, param2);
 
-								gameExists = true;
-							}
-						}
-					}
+                    }
+                    else if ( rbGroup.getSelectedToggle() == mobileBtn ) { // Create a new Mobile Game
 
-					if ( gameExists ) { // IF the game already exists then display an error
+                        game = new Mobile(name, inv, mobileID, param1, Double.parseDouble(param2));
 
-						newGameError.setText("This game already exists\non this platform.");
-					}
-					else if ( !gameExists ) { // If the game doesn't already exist then add it to gameList
+                    }
 
-						gameList.add(game);
+                    boolean gameExists = false;
 
-						// Refresh gamesGrid and close the newGame Dialog
-						refreshPage();
-						newGameStage.close();
-					}
-				}
-				catch ( NumberFormatException nfe ) { // Prompt the user to fill in all information
+                    gameExists = gameTree.exists(game);
 
-					newGameError.setText("Please check your\ninformation");
-				}
-				catch ( NullPointerException npe ) { // Prompt the user to fill in all information
+                    if ( gameExists ) { // IF the game already exists then display an error
 
-					newGameError.setText("Please enter all\ninformation");
-				}
+                        newGameError.setText("This game already exists\non this platform.");
+                    }
+                    else if ( !gameExists ) { // If the game doesn't already exist then add it to gameList
 
-			}
-		});
-	}
+                        gameTree.add(game);
 
-	/**
-	 * Method: radioBtnActions
-	 * @return void
-	 * Description: Radio button controls
-	 */
-	public void radioBtnActions() {
+                        // Refresh gamesGrid and close the newGame Dialog
+                        refreshPage();
+                        newGameStage.close();
+                    }
+                }
+                catch ( NumberFormatException nfe ) { // Prompt the user to fill in all information
 
-		// Control what is displayed based on which radio button is pressed
+                    newGameError.setText("Please check your\ninformation");
+                }
+                catch ( NullPointerException npe ) { // Prompt the user to fill in all information
 
-		rbGroup.selectedToggleProperty().addListener(new ChangeListener< Toggle >() {
-			@Override
-			public void changed( ObservableValue< ? extends Toggle > observable, Toggle oldValue, Toggle newValue ) {
+                    newGameError.setText("Please enter all\ninformation");
+                }
 
-				if ( rbGroup.getSelectedToggle() == pcBtn ) { // PC Radio Button
+            }
+        });
+    }
 
-					// Set the text prompts of the two gameParam fields
+    /**
+     * Method: radioBtnActions
+     * @return void
+     * Description: Radio button controls
+     */
+    public void radioBtnActions() {
 
-					gameParam1Lbl.setText("Minimum Ram\nRequired: ");
-					gameParam2Lbl.setText("Minium Disk Space\nRequired: ");
+        // Control what is displayed based on which radio button is pressed
 
-					// Make everything visible
+        rbGroup.selectedToggleProperty().addListener(new ChangeListener< Toggle >() {
+            @Override
+            public void changed( ObservableValue< ? extends Toggle > observable, Toggle oldValue, Toggle newValue ) {
 
-					gameNameLbl.setVisible(true);
-					gameNameField.setVisible(true);
-					gameInventoryLbl.setVisible(true);
-					gameInventoryField.setVisible(true);
-					gameParam1Lbl.setVisible(true);
-					gameParam1Field.setVisible(true);
-					gameParam2Lbl.setVisible(true);
-					gameParam2Field.setVisible(true);
-					submit.setVisible(true);
+                if ( rbGroup.getSelectedToggle() == pcBtn ) { // PC Radio Button
 
-					// Clear all textFields of text
+                    // Set the text prompts of the two gameParam fields
 
-					newGameError.setText("");
-					gameNameField.setText("");
-					gameInventoryField.setText("");
-					gameParam1Field.setText("");
-					gameParam2Field.setText("");
-				}
-				else if ( rbGroup.getSelectedToggle() == consoleBtn ) { // Console Radio Button
+                    gameParam1Lbl.setText("Minimum Ram\nRequired: ");
+                    gameParam2Lbl.setText("Minium Disk Space\nRequired: ");
 
-					// Set the text prompts of the two gameParam fields
+                    // Make everything visible
 
-					gameParam1Lbl.setText("Console System: ");
-					gameParam2Lbl.setText("Generation: ");
+                    gameNameLbl.setVisible(true);
+                    gameNameField.setVisible(true);
+                    gameInventoryLbl.setVisible(true);
+                    gameInventoryField.setVisible(true);
+                    gameParam1Lbl.setVisible(true);
+                    gameParam1Field.setVisible(true);
+                    gameParam2Lbl.setVisible(true);
+                    gameParam2Field.setVisible(true);
+                    submit.setVisible(true);
 
-					// Make everything visible
+                    // Clear all textFields of text
 
-					gameNameLbl.setVisible(true);
-					gameNameField.setVisible(true);
-					gameInventoryLbl.setVisible(true);
-					gameInventoryField.setVisible(true);
-					gameParam1Lbl.setVisible(true);
-					gameParam1Field.setVisible(true);
-					gameParam2Lbl.setVisible(true);
-					gameParam2Field.setVisible(true);
-					submit.setVisible(true);
+                    newGameError.setText("");
+                    gameNameField.setText("");
+                    gameInventoryField.setText("");
+                    gameParam1Field.setText("");
+                    gameParam2Field.setText("");
+                }
+                else if ( rbGroup.getSelectedToggle() == consoleBtn ) { // Console Radio Button
 
-					// Clear all textFields of text
+                    // Set the text prompts of the two gameParam fields
 
-					newGameError.setText("");
-					gameNameField.setText("");
-					gameInventoryField.setText("");
-					gameParam1Field.setText("");
-					gameParam2Field.setText("");
-				}
-				else if ( rbGroup.getSelectedToggle() == mobileBtn ) { // Mobile Radio Button
+                    gameParam1Lbl.setText("Console System: ");
+                    gameParam2Lbl.setText("Generation: ");
 
-					// Set the text prompts of the two gameParam fields
+                    // Make everything visible
 
-					gameParam1Lbl.setText("Device Type: ");
-					gameParam2Lbl.setText("Devive Verison: ");
+                    gameNameLbl.setVisible(true);
+                    gameNameField.setVisible(true);
+                    gameInventoryLbl.setVisible(true);
+                    gameInventoryField.setVisible(true);
+                    gameParam1Lbl.setVisible(true);
+                    gameParam1Field.setVisible(true);
+                    gameParam2Lbl.setVisible(true);
+                    gameParam2Field.setVisible(true);
+                    submit.setVisible(true);
 
-					// Make everything visible
+                    // Clear all textFields of text
 
-					gameNameLbl.setVisible(true);
-					gameNameField.setVisible(true);
-					gameInventoryLbl.setVisible(true);
-					gameInventoryField.setVisible(true);
-					gameParam1Lbl.setVisible(true);
-					gameParam1Field.setVisible(true);
-					gameParam2Lbl.setVisible(true);
-					gameParam2Field.setVisible(true);
-					submit.setVisible(true);
+                    newGameError.setText("");
+                    gameNameField.setText("");
+                    gameInventoryField.setText("");
+                    gameParam1Field.setText("");
+                    gameParam2Field.setText("");
+                }
+                else if ( rbGroup.getSelectedToggle() == mobileBtn ) { // Mobile Radio Button
 
-					// Clear all textFields of text
+                    // Set the text prompts of the two gameParam fields
 
-					newGameError.setText("");
-					gameNameField.setText("");
-					gameInventoryField.setText("");
-					gameParam1Field.setText("");
-					gameParam2Field.setText("");
-				}
-			}
-		});
-	}
+                    gameParam1Lbl.setText("Device Type: ");
+                    gameParam2Lbl.setText("Devive Verison: ");
 
-	/**
-	 * Method: newGame
-	 * @return void
-	 * Description: Display the newGame Dialog
-	 */
-	public void newGame() {
+                    // Make everything visible
 
-		// Make sure none of the radio buttons are selected
+                    gameNameLbl.setVisible(true);
+                    gameNameField.setVisible(true);
+                    gameInventoryLbl.setVisible(true);
+                    gameInventoryField.setVisible(true);
+                    gameParam1Lbl.setVisible(true);
+                    gameParam1Field.setVisible(true);
+                    gameParam2Lbl.setVisible(true);
+                    gameParam2Field.setVisible(true);
+                    submit.setVisible(true);
 
-		rbGroup.selectToggle(null);
+                    // Clear all textFields of text
 
-		// Turn visibility off for everything except the radio buttons
+                    newGameError.setText("");
+                    gameNameField.setText("");
+                    gameInventoryField.setText("");
+                    gameParam1Field.setText("");
+                    gameParam2Field.setText("");
+                }
+            }
+        });
+    }
 
-		gameNameLbl.setVisible(false);
-		gameNameField.setVisible(false);
-		gameInventoryLbl.setVisible(false);
-		gameInventoryField.setVisible(false);
-		gameParam1Lbl.setVisible(false);
-		gameParam1Field.setVisible(false);
-		gameParam2Lbl.setVisible(false);
-		gameParam2Field.setVisible(false);
-		submit.setVisible(false);
+    /**
+     * Method: newGame
+     * @return void
+     * Description: Display the newGame Dialog
+     */
+    public void newGame() {
 
-		// Clear the textFields of text
+        // Make sure none of the radio buttons are selected
 
-		gameNameField.setText("");
-		gameInventoryField.setText("");
-		gameParam1Field.setText("");
-		gameParam2Field.setText("");
+        rbGroup.selectToggle(null);
 
-		newGameStage.show();
-	}
+        // Turn visibility off for everything except the radio buttons
 
-	/**
-	 * Method: newGameSetup
-	 * @return void
-	 * Description: Sets up the layout of the newGame Dialog
-	 */
-	public void newGameSetup() {
+        gameNameLbl.setVisible(false);
+        gameNameField.setVisible(false);
+        gameInventoryLbl.setVisible(false);
+        gameInventoryField.setVisible(false);
+        gameParam1Lbl.setVisible(false);
+        gameParam1Field.setVisible(false);
+        gameParam2Lbl.setVisible(false);
+        gameParam2Field.setVisible(false);
+        submit.setVisible(false);
 
-		// Radio Button Assignments and Grouping
+        // Clear the textFields of text
 
-		this.pcBtn = new RadioButton("PC");
-		this.pcBtn.setToggleGroup(rbGroup);
-		this.consoleBtn = new RadioButton("Console");
-		this.consoleBtn.setToggleGroup(rbGroup);
-		this.mobileBtn = new RadioButton("Mobile");
-		this.mobileBtn.setToggleGroup(rbGroup);
+        gameNameField.setText("");
+        gameInventoryField.setText("");
+        gameParam1Field.setText("");
+        gameParam2Field.setText("");
 
-		this.submit = new Button("Submit");
-		this.submit.setMinWidth(BUTTON_WIDTH);
-		this.submit.setMinHeight(BUTTON_HEIGHT);
+        newGameStage.show();
+    }
 
-		this.gameNameLbl = new Label("Name: ");
-		this.gameInventoryLbl = new Label("Inventory: ");
-		this.gameParam1Lbl = new Label();
-		this.gameParam2Lbl = new Label();
-		this.newGameError = new Label();
+    /**
+     * Method: newGameSetup
+     * @return void
+     * Description: Sets up the layout of the newGame Dialog
+     */
+    public void newGameSetup() {
 
-		this.gameNameField = new TextField();
-		this.gameNameField.setMinWidth(this.newGameStage.getWidth() - 150);
+        // Radio Button Assignments and Grouping
 
-		this.gameInventoryField = new TextField();
-		this.gameInventoryField.setMinWidth(this.newGameStage.getWidth() - 150);
+        this.pcBtn = new RadioButton("PC");
+        this.pcBtn.setToggleGroup(rbGroup);
+        this.consoleBtn = new RadioButton("Console");
+        this.consoleBtn.setToggleGroup(rbGroup);
+        this.mobileBtn = new RadioButton("Mobile");
+        this.mobileBtn.setToggleGroup(rbGroup);
 
-		this.gameParam1Field = new TextField();
-		this.gameParam1Field.setMinWidth(this.newGameStage.getWidth() - 150);
+        this.submit = new Button("Submit");
+        this.submit.setMinWidth(BUTTON_WIDTH);
+        this.submit.setMinHeight(BUTTON_HEIGHT);
 
-		this.gameParam2Field = new TextField();
-		this.gameParam2Field.setMinWidth(this.newGameStage.getWidth() - 150);
+        this.gameNameLbl = new Label("Name: ");
+        this.gameInventoryLbl = new Label("Inventory: ");
+        this.gameParam1Lbl = new Label();
+        this.gameParam2Lbl = new Label();
+        this.newGameError = new Label();
 
-		// Placements on newGameGridPane
-		this.newGameGridPane.add(pcBtn, 0, 0);
-		this.newGameGridPane.add(consoleBtn, 0, 1);
-		this.newGameGridPane.add(mobileBtn, 0, 2);
-		this.newGameGridPane.add(gameNameLbl, 0, 3);
-		this.newGameGridPane.add(gameNameField, 1, 3);
-		this.newGameGridPane.add(gameInventoryLbl, 0, 4);
-		this.newGameGridPane.add(gameInventoryField, 1, 4);
-		this.newGameGridPane.add(gameParam1Lbl, 0, 5);
-		this.newGameGridPane.add(gameParam1Field, 1, 5);
-		this.newGameGridPane.add(gameParam2Lbl, 0, 6);
-		this.newGameGridPane.add(gameParam2Field, 1, 6);
-		this.newGameGridPane.add(submit, 0, 7);
-		this.newGameGridPane.add(newGameError, 1, 8);
-	}
+        this.gameNameField = new TextField();
+        this.gameNameField.setMinWidth(this.newGameStage.getWidth() - 150);
 
-	/**
-	 * Method: startNewGame
-	 * @return void
-	 * Description: newGame Dialog Basics
-	 */
-	public void startNewGame() {
+        this.gameInventoryField = new TextField();
+        this.gameInventoryField.setMinWidth(this.newGameStage.getWidth() - 150);
 
-		// Creating the GridPane
+        this.gameParam1Field = new TextField();
+        this.gameParam1Field.setMinWidth(this.newGameStage.getWidth() - 150);
 
-		this.newGameGridPane = new GridPane();
-		this.newGameGridPane.setPadding(DEFAULT);
-		this.newGameGridPane.setHgap(20);
-		this.newGameGridPane.setVgap(20);
+        this.gameParam2Field = new TextField();
+        this.gameParam2Field.setMinWidth(this.newGameStage.getWidth() - 150);
 
-		this.newGameScene = new Scene(newGameGridPane, NEW_GAME_WIDTH, NEW_GAME_HEIGHT);
+        // Placements on newGameGridPane
+        this.newGameGridPane.add(pcBtn, 0, 0);
+        this.newGameGridPane.add(consoleBtn, 0, 1);
+        this.newGameGridPane.add(mobileBtn, 0, 2);
+        this.newGameGridPane.add(gameNameLbl, 0, 3);
+        this.newGameGridPane.add(gameNameField, 1, 3);
+        this.newGameGridPane.add(gameInventoryLbl, 0, 4);
+        this.newGameGridPane.add(gameInventoryField, 1, 4);
+        this.newGameGridPane.add(gameParam1Lbl, 0, 5);
+        this.newGameGridPane.add(gameParam1Field, 1, 5);
+        this.newGameGridPane.add(gameParam2Lbl, 0, 6);
+        this.newGameGridPane.add(gameParam2Field, 1, 6);
+        this.newGameGridPane.add(submit, 0, 7);
+        this.newGameGridPane.add(newGameError, 1, 8);
+    }
 
-		// Stage Setup
+    /**
+     * Method: startNewGame
+     * @return void
+     * Description: newGame Dialog Basics
+     */
+    public void startNewGame() {
 
-		this.newGameStage = new Stage();
-		this.newGameStage.setScene(newGameScene);
-		this.newGameStage.setMinWidth(NEW_GAME_WIDTH);
-		this.newGameStage.setMinHeight(NEW_GAME_HEIGHT);
-		this.newGameStage.setTitle("New Game");
+        // Creating the GridPane
 
-		// Window Closing Handler
+        this.newGameGridPane = new GridPane();
+        this.newGameGridPane.setPadding(DEFAULT);
+        this.newGameGridPane.setHgap(20);
+        this.newGameGridPane.setVgap(20);
 
-		this.newGameStage.setOnCloseRequest(new EventHandler< WindowEvent >() {
-			@Override
-			public void handle( WindowEvent event ) {
+        this.newGameScene = new Scene(newGameGridPane, NEW_GAME_WIDTH, NEW_GAME_HEIGHT);
 
-				refreshPage();
-				newGameStage.close();
-			}
-		});
+        // Stage Setup
 
-		newGameSetup();
-	}
+        this.newGameStage = new Stage();
+        this.newGameStage.setScene(newGameScene);
+        this.newGameStage.setMinWidth(NEW_GAME_WIDTH);
+        this.newGameStage.setMinHeight(NEW_GAME_HEIGHT);
+        this.newGameStage.setTitle("New Game");
 
-	/**
-	 * Method: optionsSetup
-	 * @return void
-	 * Description: Sets up the Options Dialog layout
-	 */
-	public void optionsSetup() {
+        // Window Closing Handler
 
-		// No game is selected
+        this.newGameStage.setOnCloseRequest(new EventHandler< WindowEvent >() {
+            @Override
+            public void handle( WindowEvent event ) {
 
-		this.gameSelected = null;
+                refreshPage();
+                newGameStage.close();
+            }
+        });
 
-		this.deleteBtn = new Button("Delete");
-		this.gameLbl = new Label();
+        newGameSetup();
+    }
 
-		// Label and Prompt the search field
-		this.searchField = new TextField("Search by Game ID");
-		this.searchField.setMinWidth(OPTIONS_WIDTH - BUTTON_WIDTH - 30);
-		this.searchMenuBtn = new Button("Search");
-		this.searchMenuBtn.setMinWidth(BUTTON_WIDTH);
-		this.searchPane = new BorderPane();
+    /**
+     * Method: optionsSetup
+     * @return void
+     * Description: Sets up the Options Dialog layout
+     */
+    public void optionsSetup() {
 
-		this.searchPane.setLeft(searchField);
-		this.searchPane.setRight(searchMenuBtn);
+        // No game is selected
 
-		this.gameDescriptionPane = new BorderPane();
-		this.gameDescriptionPane.setPadding(new Insets(15));
+        this.gameSelected = null;
 
-		this.gameDescription.setTop(searchPane);
-		this.gameDescription.setCenter(gameDescriptionPane);
-		this.gameDescription.setLeft(gameLbl);
+        this.deleteBtn = new Button("Delete");
+        this.gameLbl = new Label();
 
-		gameLbl.setStyle("-fx-padding:15");
+        // Label and Prompt the search field
+        this.searchField = new TextField("Search by Game ID");
+        this.searchField.setMinWidth(OPTIONS_WIDTH - BUTTON_WIDTH - 30);
+        this.searchMenuBtn = new Button("Search");
+        this.searchMenuBtn.setMinWidth(BUTTON_WIDTH);
+        this.searchPane = new BorderPane();
 
-		this.gameDescription.setBottom(deleteBtn);
-	}
+        this.searchPane.setLeft(searchField);
+        this.searchPane.setRight(searchMenuBtn);
 
-	/**
-	 * Method: startOptions
-	 * @return void
-	 * Description: Options Dialog Basics
-	 */
-	public void startOptions() {
+        this.gameDescriptionPane = new BorderPane();
+        this.gameDescriptionPane.setPadding(new Insets(15));
 
-		// Creating the BorderPanes
+        this.gameDescription.setTop(searchPane);
+        this.gameDescription.setCenter(gameDescriptionPane);
+        this.gameDescription.setLeft(gameLbl);
 
-		this.gameOptions = new BorderPane();
-		this.gameOptions.setPadding(DEFAULT);
-		this.gameOptionsScene = new Scene(gameOptions, OPTIONS_WIDTH, OPTIONS_HEIGHT);
+        gameLbl.setStyle("-fx-padding:15");
 
-		this.gameDescription = new BorderPane();
-		this.gameDescription.setPadding(DEFAULT);
-		this.gameViewScene = new Scene(gameDescription, OPTIONS_WIDTH, OPTIONS_HEIGHT);
+        this.gameDescription.setBottom(deleteBtn);
+    }
 
-		// Setup the Stage
+    /**
+     * Method: startOptions
+     * @return void
+     * Description: Options Dialog Basics
+     */
+    public void startOptions() {
 
-		this.optionsStage = new Stage();
-		this.optionsStage.setMinWidth(OPTIONS_WIDTH);
-		this.optionsStage.setMinHeight(OPTIONS_HEIGHT);
+        // Creating the BorderPanes
 
-		// Window Closing Handler
+        this.gameOptions = new BorderPane();
+        this.gameOptions.setPadding(DEFAULT);
+        this.gameOptionsScene = new Scene(gameOptions, OPTIONS_WIDTH, OPTIONS_HEIGHT);
 
-		this.optionsStage.setOnCloseRequest(new EventHandler< WindowEvent >() {
-			@Override
-			public void handle( WindowEvent event ) {
+        this.gameDescription = new BorderPane();
+        this.gameDescription.setPadding(DEFAULT);
+        this.gameViewScene = new Scene(gameDescription, OPTIONS_WIDTH, OPTIONS_HEIGHT);
 
-				optionsStage.close();
-				refreshPage();
-			}
-		});
+        // Setup the Stage
 
-		optionsSetup();
-	}
+        this.optionsStage = new Stage();
+        this.optionsStage.setMinWidth(OPTIONS_WIDTH);
+        this.optionsStage.setMinHeight(OPTIONS_HEIGHT);
 
-	/**
-	 * Method: setupStage
-	 * @return void
-	 * Description: Sets up the stage
-	 */
-	public void setupStage() {
+        // Window Closing Handler
 
-		this.gameList = new ArrayList< Game >();
+        this.optionsStage.setOnCloseRequest(new EventHandler< WindowEvent >() {
+            @Override
+            public void handle( WindowEvent event ) {
 
-		// Game Display Area
+                optionsStage.close();
+                refreshPage();
+            }
+        });
 
-		this.gridScroll = new ScrollPane();
-		this.gridScroll.setStyle("-fx-background-color:transparent");
-		this.gridScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		this.gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-		this.gridScroll.setFitToWidth(true);
+        optionsSetup();
+    }
 
-		this.gamesGrid = new FlowPane();
-		this.gamesGrid.setPadding(new Insets(15, 50, 15, 50));
-		this.gamesGrid.setHgap(30);
-		this.gamesGrid.setVgap(30);
-		this.gamesGrid.setPrefWrapLength(WIDTH - 50);
+    /**
+     * Method: setupStage
+     * @return void
+     * Description: Sets up the stage
+     */
+    public void setupStage() {
 
-		// Control Bar
+        this.gameList = new ArrayList< Game >();
+        this.gameTree = new GameTree();
 
-		this.optionsGridPane = new BorderPane();
-		this.optionsGridPane.setPadding(DEFAULT);
-		this.optionsGrid = new GridPane();
+        // Game Display Area
 
-		this.newGameBtn = new Button("New Game");
-		this.newGameBtn.setMaxWidth(BUTTON_WIDTH);
-		this.newGameBtn.setMinHeight(BUTTON_HEIGHT);
+        this.gridScroll = new ScrollPane();
+        this.gridScroll.setStyle("-fx-background-color:transparent");
+        this.gridScroll.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+        this.gridScroll.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        this.gridScroll.setFitToWidth(true);
 
-		this.searchBtn = new Button("Search");
-		this.searchBtn.setMaxWidth(BUTTON_WIDTH);
-		this.searchBtn.setMinHeight(BUTTON_HEIGHT);
+        this.gamesGrid = new FlowPane();
+        this.gamesGrid.setPadding(new Insets(15, 50, 15, 50));
+        this.gamesGrid.setHgap(30);
+        this.gamesGrid.setVgap(30);
+        this.gamesGrid.setPrefWrapLength(WIDTH - 50);
 
-		this.saveBtn = new Button("Save");
-		this.saveBtn.setMaxWidth(BUTTON_WIDTH);
-		this.saveBtn.setMinHeight(BUTTON_HEIGHT);
+        // Control Bar
 
-		this.exitBtn = new Button("Exit");
-		this.exitBtn.setMaxWidth(BUTTON_WIDTH);
-		this.exitBtn.setMinHeight(BUTTON_HEIGHT);
+        this.optionsGridPane = new BorderPane();
+        this.optionsGridPane.setPadding(DEFAULT);
+        this.optionsGrid = new GridPane();
 
-		// Control Bar Setup
-		this.optionsGridPane.setLeft(this.optionsGrid);
-		this.optionsGridPane.setRight(this.exitBtn);
-		this.optionsGrid.setHgap(10);
-		this.optionsGrid.setVgap(10);
-		this.optionsGrid.setMaxWidth(( WIDTH - 20 ) - BUTTON_WIDTH);
-		this.optionsGrid.setPadding(new Insets(0, 0, 10, 0));
-		this.optionsGrid.add(newGameBtn, 0, 0);
-		this.optionsGrid.add(searchBtn, 1, 0);
-		this.optionsGrid.add(saveBtn, 2, 0);
+        this.newGameBtn = new Button("New Game");
+        this.newGameBtn.setMaxWidth(BUTTON_WIDTH);
+        this.newGameBtn.setMinHeight(BUTTON_HEIGHT);
 
-		this.errorLbl = new Label();
-		this.gameViewList = new ArrayList< GameView >();
+        this.searchBtn = new Button("Search");
+        this.searchBtn.setMaxWidth(BUTTON_WIDTH);
+        this.searchBtn.setMinHeight(BUTTON_HEIGHT);
 
-		this.gridScroll.setContent(gamesGrid);
+        this.saveBtn = new Button("Save");
+        this.saveBtn.setMaxWidth(BUTTON_WIDTH);
+        this.saveBtn.setMinHeight(BUTTON_HEIGHT);
 
-		collectGames();
-		this.pane.setTop(optionsGridPane);
-		this.pane.setCenter(gridScroll);
-		this.pane.setBottom(errorLbl);
+        this.preOrderBtn = new Button("PreOrder");
+        this.preOrderBtn.setMaxWidth(BUTTON_WIDTH);
+        this.preOrderBtn.setMaxHeight(BUTTON_HEIGHT);
 
-		startOptions();
-		startNewGame();
+        this.inOrderBtn = new Button("InOrder");
+        this.inOrderBtn.setMaxWidth(BUTTON_WIDTH);
+        this.inOrderBtn.setMaxHeight(BUTTON_HEIGHT);
 
-		btnActions();
-		radioBtnActions();
-	}
+        this.postOrderBtn = new Button("PostOrder");
+        this.postOrderBtn.setMaxWidth(BUTTON_WIDTH);
+        this.postOrderBtn.setMaxHeight(BUTTON_HEIGHT);
 
-	/**
-	 * Method: start
-	 * @param args
-	 * @throws Exception
-	 * Description: Game Display Basics
-	 */
-	public void start( Stage args ) throws Exception {
+        this.exitBtn = new Button("Exit");
+        this.exitBtn.setMaxWidth(BUTTON_WIDTH);
+        this.exitBtn.setMinHeight(BUTTON_HEIGHT);
 
-		// Creating the BorderPane
+        // Control Bar Setup
+        this.optionsGridPane.setLeft(this.optionsGrid);
+        this.optionsGridPane.setRight(this.exitBtn);
+        this.optionsGrid.setHgap(10);
+        this.optionsGrid.setVgap(10);
+        this.optionsGrid.setMaxWidth(( WIDTH - 20 ) - BUTTON_WIDTH);
+        this.optionsGrid.setPadding(new Insets(0, 0, 10, 0));
+        this.optionsGrid.add(newGameBtn, 0, 0);
+        this.optionsGrid.add(searchBtn, 1, 0);
+        this.optionsGrid.add(saveBtn, 2, 0);
+        this.optionsGrid.add(preOrderBtn, 3, 0);
+        this.optionsGrid.add(inOrderBtn, 4, 0);
+        this.optionsGrid.add(postOrderBtn, 5, 0);
 
-		pane = new BorderPane();
-		scene = new Scene(pane, WIDTH, HEIGHT);
+        this.errorLbl = new Label();
+        this.gameViewList = new ArrayList< GameView >();
 
-		// Setup the Stage
-		mainStage = new Stage();
-		mainStage.setScene(scene);
-		mainStage.setMinWidth(WIDTH);
-		mainStage.setMinHeight(HEIGHT);
-		mainStage.setTitle("My Game Inventory");
-		mainStage.show();
+        this.gridScroll.setContent(gamesGrid);
 
-		// Window Closing Handler
+        collectGames();
+        this.pane.setTop(optionsGridPane);
+        this.pane.setCenter(gridScroll);
+        this.pane.setBottom(errorLbl);
 
-		mainStage.setOnCloseRequest(new EventHandler< WindowEvent >() {
-			@Override
-			public void handle( WindowEvent event ) {
+        startOptions();
+        startNewGame();
 
-				saveGames();
-				newGameStage.close();
-				optionsStage.close();
-				mainStage.close();
-				Platform.exit();
-			}
-		});
+        btnActions();
+        radioBtnActions();
+    }
 
-		setupStage();
-	}
+    /**
+     * Method: start
+     * @param args
+     * @throws Exception
+     * Description: Game Display Basics
+     */
+    public void start( Stage args ) throws Exception {
+
+        // Creating the BorderPane
+
+        pane = new BorderPane();
+        scene = new Scene(pane, WIDTH, HEIGHT);
+
+        // Setup the Stage
+        mainStage = new Stage();
+        mainStage.setScene(scene);
+        mainStage.setMinWidth(WIDTH);
+        mainStage.setMinHeight(HEIGHT);
+        mainStage.setTitle("My Game Inventory");
+        mainStage.show();
+
+        // Window Closing Handler
+
+        mainStage.setOnCloseRequest(new EventHandler< WindowEvent >() {
+            @Override
+            public void handle( WindowEvent event ) {
+
+                saveGames();
+                newGameStage.close();
+                optionsStage.close();
+                mainStage.close();
+                Platform.exit();
+            }
+        });
+
+        setupStage();
+    }
 }

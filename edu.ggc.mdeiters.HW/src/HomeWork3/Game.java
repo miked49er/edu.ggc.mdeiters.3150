@@ -3,8 +3,8 @@ package HomeWork3;
 /**
  * Class: Game
  * @author Mike Deiters
- * @version 1.0
- * August 25, 2015
+ * @version 1.1
+ * October 7, 2015
  * ITEC 3150-01
  *
  * Description: The parent class for different types of games
@@ -99,7 +99,11 @@ public abstract class Game implements Comparable<Game> {
      */
     public abstract String getSystem();
 
-
+    /**
+     * Method: compareTo
+     * @param game Game to be compareTo
+     * @return int to determine the
+     */
     public int compareTo( Game game ) {
 
         if (getName().equals(game.getName())) {

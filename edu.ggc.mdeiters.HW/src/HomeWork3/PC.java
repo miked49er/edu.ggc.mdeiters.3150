@@ -3,8 +3,8 @@ package HomeWork3;
 /**
  * Class: PC
  * @author Mike Deiters
- * @version 1.0
- * August 25, 2015
+ * @version 1.1
+ * October 7, 2015
  * ITEC 3150-01
  *
  * Description: Specific type of Game system parameters
@@ -78,6 +78,16 @@ public class PC extends Game {
 	@Override
 	public String getSystem() {
 		return "PC";
+	}
+
+    /**
+     * Method: compareTo
+     * @param game PC to be compareTo
+     * @return int to determine the order
+     */
+	public int compareTo( PC game ) {
+
+		return super.compareTo(game);
 	}
 
 	/**

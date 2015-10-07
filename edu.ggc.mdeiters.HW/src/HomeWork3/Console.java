@@ -3,8 +3,8 @@ package HomeWork3;
 /**
  * Class: Console
  * @author Mike Deiters
- * @version 1.0
- * August 25, 2015
+ * @version 1.1
+ * October 7, 2015
  * ITEC 3150-01
  *
  * Description: Specific type of Game system parameters
@@ -81,14 +81,18 @@ public class Console extends Game {
 		return platform;
 	}
 
-	@Override
+	/**
+	 * Method: compareTo
+	 * @param game Console to be compareTo
+	 * @return int to determine the order
+	 */
 	public int compareTo( Console game ) {
 
 		int result = super.compareTo(game);
 
 		if (result == 0) {
 
-			result = getPlatform().compareToIgnoreCase()
+			result = getPlatform().compareToIgnoreCase(game.getPlatform());
 		}
 
 		return result;
