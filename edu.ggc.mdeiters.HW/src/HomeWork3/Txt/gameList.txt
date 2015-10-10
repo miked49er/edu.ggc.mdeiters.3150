@@ -5,7 +5,7 @@ Console,The Crew,2,2002,Playstation,4
 Mobile,Minecraft,49,3001,Android,5.1
 Mobile,Monument Valley,23,3002,iPhone,9
 Console,Destiny Taken King,42,2003,Playstation,4
-Console,Destiny Taken King,39,2004,Xbox,One
+Console,Destiny Taken King,39,2004,Xbox,360
 Console,Metal Gear Solid,56,2005,Playstation,4
 PC,Portal 2,1,1003,1024,4
 Mobile,Don't Get Fired,22,3003,Android,5.0

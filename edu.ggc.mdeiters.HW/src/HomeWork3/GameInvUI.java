@@ -156,17 +156,17 @@ public class GameInvUI extends Application {
 
                     case "PC": // PC Games
 
-                        this.gameTree.add(new PC(name, Integer.parseInt(inventory), Integer.parseInt(id), Integer.parseInt(param1), Integer.parseInt(param2)));
+                        this.gameTree.insert(new PC(name, Integer.parseInt(inventory), Integer.parseInt(id), Integer.parseInt(param1), Integer.parseInt(param2)));
                         break;
 
                     case "Console": // Console Games
 
-                        this.gameTree.add(new Console(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, param2));
+                        this.gameTree.insert(new Console(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, param2));
                         break;
 
                     case "Mobile": // Mobile Games
 
-                        this.gameTree.add(new Mobile(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, Double.parseDouble(param2)));
+                        this.gameTree.insert(new Mobile(name, Integer.parseInt(inventory), Integer.parseInt(id), param1, Double.parseDouble(param2)));
                         break;
 
                     default: // Default show an error message
@@ -491,10 +491,10 @@ public class GameInvUI extends Application {
 
                     // If the user presses ok
 
-                    if ( gameTree.remove(gameSelected) ) {
-                        refreshPage();
-                        optionsStage.close();
-                    }
+                    gameTree.remove(gameSelected);
+                    refreshPage();
+                    optionsStage.close();
+
                 }
                 else {
 
@@ -592,7 +592,7 @@ public class GameInvUI extends Application {
                     }
                     else if ( !gameExists ) { // If the game doesn't already exist then add it to gameList
 
-                        gameTree.add(game);
+                        gameTree.insert(game);
 
                         // Refresh gamesGrid and close the newGame Dialog
                         refreshPage();

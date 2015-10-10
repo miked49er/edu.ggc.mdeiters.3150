@@ -13,12 +13,18 @@ package HomeWork3;
  */
 public class GameTreeNode<Game> {
 
-    Game element;
+    Game key;
+    int balance;
     GameTreeNode<Game> left;
     GameTreeNode<Game> right;
+    GameTreeNode<Game> parent;
 
-    public GameTreeNode( Game element ) {
+    public GameTreeNode( Game key ) {
 
-        this.element = element;
+        this.left = null;
+        this.right = null;
+        this.parent = null;
+        this.balance = 0;
+        this.key = key;
     }
 }
