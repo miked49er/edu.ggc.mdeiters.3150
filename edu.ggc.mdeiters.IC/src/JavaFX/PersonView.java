@@ -24,18 +24,6 @@ public class PersonView {
 
     /**
      * Constructor: PersonView
-     */
-    public PersonView() {
-
-        this.pane = new Pane();
-        this.name = new Label();
-        this.id = new Label();
-        this.city = new Label();
-        this.person = new Person();
-    }
-
-    /**
-     * Constructor: PersonView
      * @param person Person to create a view of
      */
     public PersonView( Person person ) {
@@ -45,6 +33,8 @@ public class PersonView {
         this.id = new Label();
         this.city = new Label();
         this.person = person;
+
+        setupPane();
     }
 
     /**
@@ -63,7 +53,6 @@ public class PersonView {
      */
     public Pane getPane() {
 
-        setupPane();
         return pane;
     }
 

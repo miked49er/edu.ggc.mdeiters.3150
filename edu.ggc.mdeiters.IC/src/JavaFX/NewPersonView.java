@@ -1,11 +1,13 @@
 package JavaFX;
 
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 /**
  * Class: NewPersonView
@@ -19,6 +21,11 @@ import javafx.scene.layout.GridPane;
  * Purpose: Design the new person dialog
  */
 public class NewPersonView {
+
+    private final int TEXT_HEIGHT = 30;
+    private final int TEXT_WIDTH = 150;
+    private final int BUTTON_HEIGHT = 30;
+    private final int BUTTON_WIDTH = 100;
 
     private GridPane pane;
     private BorderPane main;
@@ -172,9 +179,9 @@ public class NewPersonView {
      * Method: setBackground
      * @param color Background
      */
-    public void setBackground( Background color ) {
+    public void setBackground( Color color ) {
 
-        main.setBackground(color);
+        main.setStyle("-fx-background-color:" + color);
     }
 
     /**
@@ -186,19 +193,19 @@ public class NewPersonView {
         pane.setVgap(10);
         pane.setHgap(20);
 
-        okBtn.setMinWidth(100);
-        okBtn.setMinHeight(40);
-        cancelBtn.setMinWidth(100);
-        cancelBtn.setMinHeight(40);
+        okBtn.setMinWidth(BUTTON_WIDTH);
+        okBtn.setMinHeight(BUTTON_HEIGHT);
+        cancelBtn.setMinWidth(BUTTON_WIDTH);
+        cancelBtn.setMinHeight(BUTTON_HEIGHT);
 
-        firstField.setMinWidth(150);
-        firstField.setMinHeight(40);
-        lastField.setMinWidth(150);
-        lastField.setMinHeight(40);
-        idField.setMinWidth(150);
-        idField.setMinHeight(40);
-        cityField.setMinWidth(150);
-        cityField.setMinHeight(40);
+        firstField.setMinWidth(TEXT_WIDTH);
+        firstField.setMinHeight(TEXT_HEIGHT);
+        lastField.setMinWidth(TEXT_WIDTH);
+        lastField.setMinHeight(TEXT_HEIGHT);
+        idField.setMinWidth(TEXT_WIDTH);
+        idField.setMinHeight(TEXT_HEIGHT);
+        cityField.setMinWidth(TEXT_WIDTH);
+        cityField.setMinHeight(TEXT_HEIGHT);
 
         pane.add(firstName, 0, 0);
         pane.add(firstField, 1, 0);
@@ -213,9 +220,12 @@ public class NewPersonView {
         buttons.setLeft(cancelBtn);
         buttons.setRight(okBtn);
 
+        title.setPadding(new Insets(0,0,10,0));
+
         main.setTop(title);
         main.setCenter(pane);
         main.setBottom(buttons);
+        main.setPadding(new Insets(15));
     }
 
     /**

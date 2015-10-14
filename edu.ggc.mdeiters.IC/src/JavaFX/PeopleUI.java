@@ -1,15 +1,16 @@
 package JavaFX;
 
 import javafx.application.Application;
+import javafx.geometry.*;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -28,57 +29,76 @@ import java.util.HashSet;
  */
 public class PeopleUI extends Application {
 
-    private final int HEIGHT = 400;
-    private final int WIDTH = 600;
+    private final int HEIGHT = 300;
+    private final int WIDTH = 500;
     private final int BUTTON_WIDTH = 150;
-    private final int BUTTON_HEIGHT = 40;
+    private final int BUTTON_HEIGHT = 30;
 
     private PersonReader reader;
     private PeopleWriter writer;
+    private NewPersonView newPerson;
+    private PersonViewList viewList;
     private File saveFile;
-    private HashSet< Person > people;
+    private HashSet<Person> people;
 
     private Scene primaryScene;
     private Stage mainStage;
     private BorderPane pane;
-    private Pane sidePane;
+    private FlowPane sidePane;
 
     private Button newPersonBtn;
     private Button viewPeople;
 
     private void setupStage() {
 
-        try {
+//        try {
+//
+//            reader.setFile(saveFile);
+//            writer.setFile(saveFile);
+//
+//            // Read the file into a hashset
+//
+//            people = reader.readPeople();
+//        }
+//        catch ( ClassNotFoundException cnf ) { // Print Message
+//
+//            System.out.println(cnf.getMessage());
+//        }
+//        catch ( FileNotFoundException fnf ) { // Print Message
+//
+//            System.out.println(fnf.getMessage());
+//        }
+//        catch ( IOException ioe ) { // Print Message
+//
+//            System.out.println(ioe.getMessage());
+//        }
 
-            reader.setFile(saveFile);
-            writer.setFile(saveFile);
+        // Button widths and heights
 
-            // Read the file into a hashset
+        newPersonBtn.setMinWidth(BUTTON_WIDTH);
+        newPersonBtn.setMinHeight(BUTTON_HEIGHT);
+        viewPeople.setMinWidth(BUTTON_WIDTH);
+        viewPeople.setMinHeight(BUTTON_HEIGHT);
 
-            people = reader.readPeople();
+        // Create the sidePane
 
-            // Button widths and heights
+        sidePane.setMaxWidth(200);
+        sidePane.setMinHeight(HEIGHT);
+        sidePane.setVgap(15);
+        sidePane.setPadding(new Insets(15,25,15,25));
+        sidePane.setStyle("-fx-background-color:rgb(230,230,230)");
+        sidePane.getChildren().add(0,viewPeople);
+        sidePane.getChildren().add(1,newPersonBtn);
 
-            newPersonBtn.setMinWidth(BUTTON_WIDTH);
-            newPersonBtn.setMinHeight(BUTTON_HEIGHT);
-            viewPeople.setMinWidth(BUTTON_WIDTH);
-            viewPeople.setMinHeight(BUTTON_HEIGHT);
+        pane.setLeft(sidePane);
 
-            sidePane.setMaxWidth(200);
-            sidePane.getChildren().addAll(viewPeople, newPersonBtn);
+        if ( people.isEmpty() ) { // If the hashset is empty then display newPerson
 
+            pane.setRight(newPerson.getPane());
         }
-        catch ( ClassNotFoundException cnf ) { // Print Message
+        else { // Otherwise display viewList
 
-            System.out.println(cnf.getMessage());
-        }
-        catch ( FileNotFoundException fnf ) { // Print Message
-
-            System.out.println(fnf.getMessage());
-        }
-        catch ( IOException ioe ) { // Print Message
-
-            System.out.println(ioe.getMessage());
+            pane.setRight(viewList.getPane());
         }
     }
 
@@ -99,12 +119,14 @@ public class PeopleUI extends Application {
     public void start( Stage primaryStage ) throws Exception {
 
         this.pane = new BorderPane();
-        this.sidePane = new Pane();
+        this.sidePane = new FlowPane();
         this.newPersonBtn = new Button("New Person");
         this.viewPeople = new Button("View People");
 
         this.reader = new PersonReader();
         this.writer = new PeopleWriter();
+        this.newPerson = new NewPersonView();
+        this.viewList = new PersonViewList();
         this.saveFile = new File(getFile());
         this.people = new HashSet<>();
 
@@ -112,6 +134,7 @@ public class PeopleUI extends Application {
 
         this.primaryScene = new Scene(pane, WIDTH, HEIGHT);
         this.mainStage = new Stage();
+        this.mainStage.setScene(primaryScene);
         this.mainStage.setMinWidth(WIDTH);
         this.mainStage.setMinHeight(HEIGHT);
         this.mainStage.setTitle("Contacts");
