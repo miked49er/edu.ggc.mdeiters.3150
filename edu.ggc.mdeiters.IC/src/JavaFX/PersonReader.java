@@ -38,6 +38,15 @@ public class PersonReader {
     }
 
     /**
+     * Method: setFile
+     * @param file File
+     */
+    public void setFile( File file ) {
+
+        this.file = file;
+    }
+
+    /**
      * Method: readPeople
      * @return people HastSet of firstNames
      * @throws ClassNotFoundException

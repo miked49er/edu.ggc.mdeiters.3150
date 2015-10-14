@@ -3,6 +3,7 @@ package JavaFX;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 
@@ -25,6 +26,7 @@ public class NewPersonView {
     private Button okBtn;
     private Button cancelBtn;
     private Label title;
+    private Label errorLbl;
     private Label firstName;
     private Label lastName;
     private Label id;
@@ -33,8 +35,10 @@ public class NewPersonView {
     private TextField lastField;
     private TextField idField;
     private TextField cityField;
-    private Person person;
 
+    /**
+     * Constructor: NewPersonView
+     */
     public NewPersonView() {
 
         this.pane = new GridPane();
@@ -43,6 +47,7 @@ public class NewPersonView {
         this.okBtn = new Button("OK");
         this.cancelBtn = new Button("Cancel");
         this.title = new Label("Add a new Person");
+        this.errorLbl = new Label();
         this.firstName = new Label("First Name");
         this.lastName = new Label("Last Name");
         this.id = new Label("Numeric ID");
@@ -55,16 +60,127 @@ public class NewPersonView {
         setupPane();
     }
 
+    /**
+     * Method: getPane
+     * @return main BorderPane
+     */
     public BorderPane getPane() {
 
         return main;
     }
 
-    public Person getPerson() {
+    /**
+     * Method: getOkBtn
+     * @return okBtn Button
+     */
+    public Button getOkBtn() {
 
-        return person;
+        return okBtn;
     }
 
+    /**
+     * Method: getCancelBtn
+     * @return cancelBtn
+     */
+    public Button getCancelBtn() {
+
+        return cancelBtn;
+    }
+
+    /**
+     * Method: getTitle
+     * @return title Label
+     */
+    public Label getTitle() {
+
+        return title;
+    }
+
+    /**
+     * Method: getFirstName
+     * @return firstName Label
+     */
+    public Label getFirstName() {
+
+        return firstName;
+    }
+
+    /**
+     * Method: getLastName
+     * @return lastName Label
+     */
+    public Label getLastName() {
+
+        return lastName;
+    }
+
+    /**
+     * Method: getId
+     * @return id Label
+     */
+    public Label getId() {
+
+        return id;
+    }
+
+    /**
+     * Method: getCity
+     * @return city Label
+     */
+    public Label getCity() {
+
+        return city;
+    }
+
+    /**
+     * Method: getFirstField
+     * @return firstField TextField
+     */
+    public TextField getFirstField() {
+
+        return firstField;
+    }
+
+    /**
+     * Method: getLastField
+     * @return lastField TextField
+     */
+    public TextField getLastField() {
+
+        return lastField;
+    }
+
+    /**
+     * Method: getIdField
+     * @return idField
+     */
+    public TextField getIdField() {
+
+        return idField;
+    }
+
+    /**
+     * Method: getCityField
+     * @return cityField
+     */
+    public TextField getCityField() {
+
+        return cityField;
+    }
+
+    /**
+     * Method: setBackground
+     * @param color Background
+     */
+    public void setBackground( Background color ) {
+
+        main.setBackground(color);
+    }
+
+    /**
+     * Method: setupPane
+     * Description: Setup how the dialog looks
+     */
     private void setupPane() {
 
         pane.setVgap(10);
@@ -91,7 +207,8 @@ public class NewPersonView {
         pane.add(id, 0, 2);
         pane.add(idField, 1, 2);
         pane.add(city, 0, 3);
-        pane.add(cityField, 1,3);
+        pane.add(cityField, 1, 3);
+        pane.add(errorLbl, 1, 4);
 
         buttons.setLeft(cancelBtn);
         buttons.setRight(okBtn);
@@ -99,5 +216,18 @@ public class NewPersonView {
         main.setTop(title);
         main.setCenter(pane);
         main.setBottom(buttons);
+    }
+
+    /**
+     * Method: clear
+     * Description: Clear the text fields
+     */
+    public void clear() {
+
+        firstField.setText("");
+        lastField.setText("");
+        idField.setText("");
+        cityField.setText("");
+        errorLbl.setText("");
     }
 }

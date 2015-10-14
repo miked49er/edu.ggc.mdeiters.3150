@@ -43,6 +43,15 @@ public class PeopleWriter {
     }
 
     /**
+     * Method: setFile
+     * @param file File
+     */
+    public void setFile( File file ) {
+
+        this.file = file;
+    }
+
+    /**
      * Method: writeOut
      * @param list
      * @throws IOException
