@@ -1,9 +1,12 @@
 package JavaFX;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -28,8 +31,7 @@ public class PersonViewList {
     private HashSet<Person> people;
     private BorderPane main;
     private BorderPane buttons;
-    private ScrollPane scroller;
-    private FlowPane flowPane;
+    private ListView<Person> listView;
     private Button saveBtn;
 
     /**
@@ -40,9 +42,8 @@ public class PersonViewList {
         this.people = new HashSet<>();
         this.main = new BorderPane();
         this.buttons = new BorderPane();
-        this.scroller = new ScrollPane();
-        this.flowPane = new FlowPane();
-        this.saveBtn = new Button();
+        this.listView = new ListView<>();
+        this.saveBtn = new Button("Save");
 
         setupPane();
     }
@@ -56,9 +57,8 @@ public class PersonViewList {
         this.people = people;
         this.main = new BorderPane();
         this.buttons = new BorderPane();
-        this.scroller = new ScrollPane();
-        this.flowPane = new FlowPane();
-        this.saveBtn = new Button();
+        this.listView = new ListView<>();
+        this.saveBtn = new Button("Save");
 
         setupPane();
     }
@@ -88,7 +88,16 @@ public class PersonViewList {
     public void setPeople( HashSet<Person> people ) {
 
         this.people = people;
-        refresh();
+        listView.setItems(getObservableList());
+    }
+
+    /**
+     * Method: getPeople
+     * @return people HashSet of Person
+     */
+    public HashSet< Person > getPeople() {
+
+        return people;
     }
 
     /**
@@ -107,37 +116,35 @@ public class PersonViewList {
     private void setupPane() {
 
         saveBtn.setMinWidth(100);
-        saveBtn.setMinHeight(40);
+        saveBtn.setMinHeight(30);
 
         buttons.setRight(saveBtn);
+        buttons.setPadding(new Insets(0,0,10,0));
 
-        scroller.setStyle("-fx-background-color:transparent");
-        scroller.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-        scroller.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scroller.setFitToWidth(true);
-        scroller.setContent(flowPane);
+        listView.setItems(getObservableList());
+        listView.autosize();
+        listView.setMaxHeight(325);
 
         main.setTop(buttons);
-        main.setBottom(scroller);
+        main.setBottom(listView);
         main.setPadding(new Insets(15));
     }
 
     /**
-     * Method: refresh
-     * Description: Removes and Readds the PersonViews
+     * Method: getOvservableList
+     * @return list ObservableList
+     * Description: Creates an ObservableList from people
      */
-    private void refresh() {
+    private ObservableList<Person> getObservableList() {
 
-        // Clear the Flow Pane
+        ArrayList<Person> array = new ArrayList<>();
 
-        flowPane.getChildren().removeAll();
+        for (Person person : people) {
 
-        // Creates a new PersonView with person
-        // Then add the new PersonView to flowPane
-
-        for ( Person person : people ) {
-
-            flowPane.getChildren().add(new PersonView(person).getPane());
+            array.add(person);
         }
+        ObservableList<Person> list = FXCollections.observableArrayList(array);
+
+        return list;
     }
 }

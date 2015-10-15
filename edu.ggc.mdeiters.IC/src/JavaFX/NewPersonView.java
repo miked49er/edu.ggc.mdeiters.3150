@@ -103,76 +103,45 @@ public class NewPersonView {
         return title;
     }
 
-    /**
-     * Method: getFirstName
-     * @return firstName Label
-     */
-    public Label getFirstName() {
+    public void setErrorText(String str) {
 
-        return firstName;
-    }
-
-    /**
-     * Method: getLastName
-     * @return lastName Label
-     */
-    public Label getLastName() {
-
-        return lastName;
-    }
-
-    /**
-     * Method: getId
-     * @return id Label
-     */
-    public Label getId() {
-
-        return id;
-    }
-
-    /**
-     * Method: getCity
-     * @return city Label
-     */
-    public Label getCity() {
-
-        return city;
+        errorLbl.setText(str);
     }
 
     /**
      * Method: getFirstField
-     * @return firstField TextField
+     * @return String firstField text entry
      */
-    public TextField getFirstField() {
+    public String getFirstField() {
 
-        return firstField;
+        return firstField.getText();
     }
 
     /**
      * Method: getLastField
-     * @return lastField TextField
+     * @return String lastField text entry
      */
-    public TextField getLastField() {
+    public String getLastField() {
 
-        return lastField;
+        return lastField.getText();
     }
 
     /**
      * Method: getIdField
-     * @return idField
+     * @return String idField text entry
      */
-    public TextField getIdField() {
+    public String getIdField() {
 
-        return idField;
+        return idField.getText();
     }
 
     /**
      * Method: getCityField
-     * @return cityField
+     * @return String cityField text entry
      */
-    public TextField getCityField() {
+    public String getCityField() {
 
-        return cityField;
+        return cityField.getText();
     }
 
     /**

@@ -1,6 +1,7 @@
 package JavaFX;
 
 import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 
 /**
@@ -16,7 +17,7 @@ import javafx.scene.layout.Pane;
  */
 public class PersonView {
 
-    private Pane pane;
+    private GridPane pane;
     private Label name;
     private Label id;
     private Label city;
@@ -28,7 +29,7 @@ public class PersonView {
      */
     public PersonView( Person person ) {
 
-        this.pane = new Pane();
+        this.pane = new GridPane();
         this.name = new Label();
         this.id = new Label();
         this.city = new Label();
@@ -65,8 +66,8 @@ public class PersonView {
         name.setText(person.getFirstName() + " " + person.getLastName());
         id.setText(person.getIdNum() + "");
         city.setText(person.getCity());
-        pane.getChildren().add(name);
-        pane.getChildren().add(id);
-        pane.getChildren().add(city);
+        pane.addRow(0,name);
+        pane.addRow(1,id);
+        pane.addRow(2,city);
     }
 }

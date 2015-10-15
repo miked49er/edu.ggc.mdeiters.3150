@@ -26,6 +26,7 @@ public class PersonReader {
     public PersonReader() {
 
         this.file = null;
+        this.people = new HashSet<>();
     }
 
     /**
@@ -53,7 +54,7 @@ public class PersonReader {
      * @throws IOException
      * Description: Reads the binary files into a HashSet
      */
-    public HashSet< Person > readPeople() throws ClassNotFoundException, IOException {
+    public HashSet< Person > readPeople(String file) throws ClassNotFoundException, IOException {
 
         try {
 

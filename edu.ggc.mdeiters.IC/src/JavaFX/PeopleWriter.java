@@ -57,9 +57,9 @@ public class PeopleWriter {
      * @throws IOException
      * Description: Write Person objects to a binary file
      */
-    public void writeOut( HashSet< Person > list ) throws IOException {
+    public void writeOut( HashSet< Person > list, String file) throws IOException {
 
-        ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(this.file));
+        ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
 
         for ( Person person : list ) {
 
