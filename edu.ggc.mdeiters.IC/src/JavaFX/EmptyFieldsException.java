@@ -13,11 +13,20 @@ package JavaFX;
  */
 public class EmptyFieldsException extends Exception {
 
+    /**
+     * Constructor: EmptyFieldsException
+     */
     public EmptyFieldsException() {
+
         super();
     }
 
+    /**
+     * Constructor: EmptyFieldsException
+     * @param message String
+     */
     public EmptyFieldsException( String message ) {
+
         super(message);
     }
 }

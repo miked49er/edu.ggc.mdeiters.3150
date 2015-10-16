@@ -7,9 +7,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
 
-import java.io.File;
-import java.util.HashSet;
-
 /**
  * Class: PeopleUI
  * @author Mike Deiters
@@ -68,10 +65,13 @@ public class PeopleUI {
 
         newPersonBtn.setMinWidth(BUTTON_WIDTH);
         newPersonBtn.setMinHeight(BUTTON_HEIGHT);
-        newPersonBtn.setStyle("-fx-background-color:#fff");
+        newPersonBtn.setStyle("-fx-background-color:#fff"); // White
         viewPeopleBtn.setMinWidth(BUTTON_WIDTH);
         viewPeopleBtn.setMinHeight(BUTTON_HEIGHT);
-        viewPeopleBtn.setStyle("-fx-background-color:#fff");
+        viewPeopleBtn.setStyle("-fx-background-color:#fff"); // White
+
+        viewList.setBackground("#fff"); // White
+        newPerson.setBackground("#fff"); // White
 
         // Create the sidePane
 
@@ -79,7 +79,7 @@ public class PeopleUI {
         sidePane.setMinHeight(HEIGHT);
         sidePane.setVgap(15);
         sidePane.setPadding(new Insets(15, 25, 15, 25));
-        sidePane.setStyle("-fx-background-color:rgb(230,230,230)");
+        sidePane.setStyle("-fx-background-color:#E60000"); // Dark Red
         sidePane.getChildren().add(0, viewPeopleBtn);
         sidePane.getChildren().add(1, newPersonBtn);
 

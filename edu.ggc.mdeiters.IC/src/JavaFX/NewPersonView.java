@@ -103,6 +103,11 @@ public class NewPersonView {
         return title;
     }
 
+    /**
+     * Method: setErrorText
+     * @param str String
+     * Description: Display the error message
+     */
     public void setErrorText(String str) {
 
         errorLbl.setText(str);
@@ -147,8 +152,9 @@ public class NewPersonView {
     /**
      * Method: setBackground
      * @param color Background
+     * Description: Assign a background color to the pane
      */
-    public void setBackground( Color color ) {
+    public void setBackground( String color ) {
 
         main.setStyle("-fx-background-color:" + color);
     }
@@ -162,10 +168,16 @@ public class NewPersonView {
         pane.setVgap(10);
         pane.setHgap(20);
 
+        // Button Heigh, Widths, and Background Color
+
         okBtn.setMinWidth(BUTTON_WIDTH);
         okBtn.setMinHeight(BUTTON_HEIGHT);
+        okBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
         cancelBtn.setMinWidth(BUTTON_WIDTH);
         cancelBtn.setMinHeight(BUTTON_HEIGHT);
+        cancelBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
+
+        // Fields Height and Widths
 
         firstField.setMinWidth(TEXT_WIDTH);
         firstField.setMinHeight(TEXT_HEIGHT);
@@ -175,6 +187,8 @@ public class NewPersonView {
         idField.setMinHeight(TEXT_HEIGHT);
         cityField.setMinWidth(TEXT_WIDTH);
         cityField.setMinHeight(TEXT_HEIGHT);
+
+        // Add elements to the gridpane
 
         pane.add(firstName, 0, 0);
         pane.add(firstField, 1, 0);
@@ -186,8 +200,12 @@ public class NewPersonView {
         pane.add(cityField, 1, 3);
         pane.add(errorLbl, 1, 4);
 
+        // Create the button pane
+
         buttons.setLeft(cancelBtn);
         buttons.setRight(okBtn);
+
+        // Bottom padding
 
         title.setPadding(new Insets(0,0,10,0));
 

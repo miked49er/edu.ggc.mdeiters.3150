@@ -49,6 +49,7 @@ public class PersonReader {
 
     /**
      * Method: readPeople
+     * @param file String of the file location
      * @return people HastSet of firstNames
      * @throws ClassNotFoundException
      * @throws IOException

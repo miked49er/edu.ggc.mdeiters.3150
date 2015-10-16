@@ -53,7 +53,8 @@ public class PeopleWriter {
 
     /**
      * Method: writeOut
-     * @param list
+     * @param list HashSet of Person
+     * @param file String of the file location
      * @throws IOException
      * Description: Write Person objects to a binary file
      */

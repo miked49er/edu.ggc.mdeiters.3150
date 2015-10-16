@@ -3,13 +3,9 @@ package JavaFX;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 
 import java.util.ArrayList;
@@ -104,7 +100,7 @@ public class PersonViewList {
      * Method: setBackground
      * @param color Color to make the pane background
      */
-    public void setBackground(Color color) {
+    public void setBackground(String color) {
 
         main.setStyle("-fx-background-color:" + color);
     }
@@ -117,9 +113,12 @@ public class PersonViewList {
 
         saveBtn.setMinWidth(100);
         saveBtn.setMinHeight(30);
+        saveBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
 
         buttons.setRight(saveBtn);
-        buttons.setPadding(new Insets(0,0,10,0));
+        buttons.setPadding(new Insets(0, 0, 10, 0));
+
+        // Assign the people to the listview
 
         listView.setItems(getObservableList());
         listView.autosize();
@@ -139,7 +138,7 @@ public class PersonViewList {
 
         ArrayList<Person> array = new ArrayList<>();
 
-        for (Person person : people) {
+        for (Person person : people) { // Add all of the people in the hashset to the arraylist
 
             array.add(person);
         }

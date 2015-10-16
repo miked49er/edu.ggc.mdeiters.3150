@@ -49,9 +49,6 @@ public class Actions extends Application {
 
         try {
 
-//            reader.setFile(saveFile);
-//            write.setFile(saveFile);
-
             // Read the file into a hashset
 
             people = reader.readPeople(saveFile);
@@ -157,10 +154,15 @@ public class Actions extends Application {
 
                 try {
 
+                    // If any of the fields are empty then throw an error
+
                     if ( newPersonView.getFirstField().isEmpty() || newPersonView.getLastField().isEmpty() || newPersonView.getIdField().isEmpty() || newPersonView.getCityField().isEmpty() ) {
 
                         throw new EmptyFieldsException("Please fill out all fields");
                     }
+
+                    // Attempt to create the person fields
+
                     String first = newPersonView.getFirstField();
                     String last = newPersonView.getLastField();
                     int id = Integer.parseInt(newPersonView.getIdField());
@@ -175,9 +177,9 @@ public class Actions extends Application {
                     person.setIdNum(id);
                     person.setCity(city);
 
-                    for ( Person element: people ) {
+                    for ( Person element: people ) { // Check for identical id numbers
 
-                        if (person.getIdNum() == element.getIdNum()) {
+                        if (person.getIdNum() == element.getIdNum()) { // Throw an error if id number is not unique
 
                             throw new EmptyFieldsException("Please enter an unique id");
                         }
