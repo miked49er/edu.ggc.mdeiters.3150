@@ -140,7 +140,7 @@ public class GameCollect {
 
         try {
 
-            URL path = GameCollect.class.getResource("Txt/gameList.txt");
+            URL path = GameCollect.class.getResource("Txt\\gameList.txt");
             this.gameFile = new File(path.getFile());
             this.unknownGame = getClass().getResource("Images\\Unknown-Game.png").toExternalForm();
             this.planetside2 = getClass().getResource("Images\\planetside2.jpg").toExternalForm();
