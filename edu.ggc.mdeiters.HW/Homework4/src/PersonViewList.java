@@ -2,8 +2,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 
 import java.util.ArrayList;
@@ -22,12 +24,18 @@ import java.util.HashSet;
  */
 public class PersonViewList {
 
-    private final int columnWidth = 50;
+    private final int columnWidth = 49;
     private HashSet<Person> people;
     private BorderPane main;
     private BorderPane buttons;
     private TableView<Person> tableView;
     private Button saveBtn;
+    private Label errorTxt;
+    private TableColumn nameCol;
+    private TableColumn firstCol;
+    private TableColumn lastCol;
+    private TableColumn idCol;
+    private TableColumn cityCol;
 
     /**
      * Constructor: PersonViewList
@@ -56,6 +64,80 @@ public class PersonViewList {
         this.saveBtn = new Button("Save");
 
         setupPane();
+    }
+
+    /**
+     * Method: setupPane
+     * Description: Setup the view
+     */
+    private void setupPane() {
+
+        saveBtn.setMinWidth(100);
+        saveBtn.setMinHeight(30);
+        saveBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
+
+        errorTxt = new Label();
+        buttons.setLeft(errorTxt);
+        buttons.setRight(saveBtn);
+        buttons.setPadding(new Insets(0, 0, 10, 0));
+
+
+        // Assign the people to the listview
+
+        tableView.setItems(getObservableList());
+        tableView.autosize();
+        tableView.setMaxHeight(325);
+        tableView.setEditable(true);
+
+        this.nameCol = new TableColumn("Name");
+        this.firstCol = new TableColumn("First");
+        this.lastCol = new TableColumn("Last");
+        this.idCol = new TableColumn("ID");
+        this.cityCol = new TableColumn("City");
+
+        firstCol.setCellValueFactory(new PropertyValueFactory<Person, String>("firstName"));
+        lastCol.setCellValueFactory(new PropertyValueFactory<Person, String>("lastName"));
+        idCol.setCellValueFactory(new PropertyValueFactory<Person, Integer>("idNum"));
+        cityCol.setCellValueFactory(new PropertyValueFactory<Person, String>("city"));
+
+        nameCol.getColumns().addAll(firstCol, lastCol);
+        tableView.getColumns().addAll(nameCol, idCol, cityCol);
+        tableView.resizeColumn(firstCol, columnWidth);
+        tableView.resizeColumn(lastCol, columnWidth);
+        tableView.resizeColumn(idCol, columnWidth);
+        tableView.resizeColumn(cityCol, columnWidth);
+
+        main.setTop(buttons);
+        main.setBottom(tableView);
+        main.setPadding(new Insets(15));
+    }
+
+    /**
+     * Method: getOvservableList
+     * @return list ObservableList
+     * Description: Creates an ObservableList from people
+     */
+    private ObservableList<Person> getObservableList() {
+
+        ArrayList<Person> array = new ArrayList<>();
+
+        for (Person person : people) { // Add all of the people in the hashset to the arraylist
+
+            array.add(person);
+        }
+        ObservableList<Person> list = FXCollections.observableArrayList(array);
+
+        return list;
+    }
+
+    /**
+     * Method: setErrorText
+     * @param str String
+     * Description: Display the error message
+     */
+    public void setErrorText(String str) {
+
+        errorTxt.setText(str);
     }
 
     /**
@@ -105,55 +187,38 @@ public class PersonViewList {
     }
 
     /**
-     * Method: setupPane
-     * Description: Setup the view
+     * Method: getFirstCol
+     * @return firstCol TableColumn
      */
-    private void setupPane() {
+    public TableColumn getFirstCol() {
 
-        saveBtn.setMinWidth(100);
-        saveBtn.setMinHeight(30);
-        saveBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
-
-        buttons.setRight(saveBtn);
-        buttons.setPadding(new Insets(0, 0, 10, 0));
-
-        // Assign the people to the listview
-
-//        tableView.setItems(getObservableList());
-        tableView.autosize();
-        tableView.setMaxHeight(325);
-
-        TableColumn firstName = new TableColumn("First Name");
-        TableColumn lastName = new TableColumn("Last Name");
-        TableColumn id = new TableColumn("ID");
-        TableColumn city = new TableColumn("City");
-
-        tableView.getColumns().addAll(firstName, lastName, id, city);
-        tableView.resizeColumn(firstName, columnWidth);
-        tableView.resizeColumn(lastName, columnWidth);
-        tableView.resizeColumn(id, columnWidth);
-        tableView.resizeColumn(city, columnWidth);
-
-        main.setTop(buttons);
-        main.setBottom(tableView);
-        main.setPadding(new Insets(15));
+        return firstCol;
     }
 
     /**
-     * Method: getOvservableList
-     * @return list ObservableList
-     * Description: Creates an ObservableList from people
+     * Method: getLastCol
+     * @return lastCol TableColumn
      */
-    private ObservableList<Person> getObservableList() {
+    public TableColumn getLastCol() {
 
-        ArrayList<Person> array = new ArrayList<>();
+        return lastCol;
+    }
 
-        for (Person person : people) { // Add all of the people in the hashset to the arraylist
+    /**
+     * Method: getIdCol
+     * @return idCol TableColumn
+     */
+    public TableColumn getIdCol() {
 
-            array.add(person);
-        }
-        ObservableList<Person> list = FXCollections.observableArrayList(array);
+        return idCol;
+    }
 
-        return list;
+    /**
+     * Method: getCityCol
+     * @return cityCol TableColumn
+     */
+    public TableColumn getCityCol() {
+
+        return cityCol;
     }
 }

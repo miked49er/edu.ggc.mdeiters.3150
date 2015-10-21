@@ -113,38 +113,38 @@ public class NewPersonView {
 
     /**
      * Method: getFirstField
-     * @return String firstField text entry
+     * @return firstField TextField
      */
-    public String getFirstField() {
+    public TextField getFirstField() {
 
-        return firstField.getText();
+        return firstField;
     }
 
     /**
      * Method: getLastField
-     * @return String lastField text entry
+     * @return lastField TextField
      */
-    public String getLastField() {
+    public TextField getLastField() {
 
-        return lastField.getText();
+        return lastField;
     }
 
     /**
      * Method: getIdField
-     * @return String idField text entry
+     * @return idField TextField
      */
-    public String getIdField() {
+    public TextField getIdField() {
 
-        return idField.getText();
+        return idField;
     }
 
     /**
      * Method: getCityField
-     * @return String cityField text entry
+     * @return cityField TextField
      */
-    public String getCityField() {
+    public TextField getCityField() {
 
-        return cityField.getText();
+        return cityField;
     }
 
     /**
