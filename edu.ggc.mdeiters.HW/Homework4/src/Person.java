@@ -7,8 +7,7 @@ import java.io.Serializable;
  * @author cjohns25
  *
  */
-public class Person implements Serializable
-{
+public class Person implements Serializable {
     public String firstName;
     public String lastName;
     public int idNum;
@@ -17,8 +16,7 @@ public class Person implements Serializable
     /**
      * Default constructor used to create empty attributes
      */
-    public Person()
-    {
+    public Person() {
         firstName = "";
         lastName = "";
         idNum = 0;
@@ -31,8 +29,7 @@ public class Person implements Serializable
      * @param idNum
      * @param city
      */
-    public Person(String firstName, String lastName, int idNum, String city)
-    {
+    public Person( String firstName, String lastName, int idNum, String city ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.idNum = idNum;
@@ -45,8 +42,7 @@ public class Person implements Serializable
      * @see java.lang.Object#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Person [firstName=" + firstName + ", lastName=" + lastName
                 + ", idNum=" + idNum + ", city=" + city + "]";
     }
@@ -54,8 +50,7 @@ public class Person implements Serializable
     /**
      * @return the firstName
      */
-    public String getFirstName()
-    {
+    public String getFirstName() {
         return firstName;
     }
 
@@ -63,16 +58,14 @@ public class Person implements Serializable
      * @param firstName
      *            the firstName to set
      */
-    public void setFirstName(String firstName)
-    {
+    public void setFirstName( String firstName ) {
         this.firstName = firstName;
     }
 
     /**
      * @return the lastName
      */
-    public String getLastName()
-    {
+    public String getLastName() {
         return lastName;
     }
 
@@ -80,16 +73,14 @@ public class Person implements Serializable
      * @param lastName
      *            the lastName to set
      */
-    public void setLastName(String lastName)
-    {
+    public void setLastName( String lastName ) {
         this.lastName = lastName;
     }
 
     /**
      * @return the idNum
      */
-    public int getIdNum()
-    {
+    public int getIdNum() {
         return idNum;
     }
 
@@ -97,16 +88,24 @@ public class Person implements Serializable
      * @param idNum
      *            the idNum to set
      */
-    public void setIdNum(int idNum)
-    {
+    public void setIdNum( int idNum ) throws NumberFormatException {
         this.idNum = idNum;
+    }
+
+    /**
+     * Method: setIdNum
+     * @param idNum
+     * @throws NumberFormatException
+     */
+    public void setIdNum( String idNum ) throws NumberFormatException {
+
+        this.idNum = Integer.parseInt(idNum);
     }
 
     /**
      * @return the city
      */
-    public String getCity()
-    {
+    public String getCity() {
         return city;
     }
 
@@ -114,8 +113,7 @@ public class Person implements Serializable
      * @param city
      *            the city to set
      */
-    public void setCity(String city)
-    {
+    public void setCity( String city ) {
         this.city = city;
     }
 

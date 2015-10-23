@@ -24,12 +24,15 @@ public class PeopleUI {
     private final int BUTTON_HEIGHT = 30;
 
     private NewPersonView newPerson;
+    private NewPersonView editPerson;
     private PersonViewList viewList;
 
     private Scene primaryScene;
     private Scene newPeopleScene;
+    private Scene editPeopleScene;
     private Stage mainStage;
     private Stage newPeopleStage;
+    private Stage editPeopleStage;
     private BorderPane pane;
     private FlowPane sidePane;
 
@@ -43,9 +46,10 @@ public class PeopleUI {
      * @param mainStage Stage
      * Description: Setup the stage
      */
-    public PeopleUI(NewPersonView newPersonView, PersonViewList personViewList, Stage mainStage) throws Exception {
+    public PeopleUI(NewPersonView newPersonView, NewPersonView editPersonView, PersonViewList personViewList, Stage mainStage) throws Exception {
 
         this.newPerson = newPersonView;
+        this.editPerson = editPersonView;
         this.viewList = personViewList;
         this.mainStage = mainStage;
         basics();
@@ -113,9 +117,16 @@ public class PeopleUI {
         this.newPeopleScene = new Scene(newPerson.getPane(), WIDTH/2, HEIGHT);
         this.newPeopleStage = new Stage();
         this.newPeopleStage.setScene(newPeopleScene);
-        this.newPeopleStage.setMinWidth(WIDTH/2);
+        this.newPeopleStage.setMinWidth(WIDTH / 2);
         this.newPeopleStage.setMinHeight(HEIGHT);
         this.newPeopleStage.setTitle("New Person");
+
+        this.editPeopleScene = new Scene(editPerson.getPane(), WIDTH/2, HEIGHT);
+        this.editPeopleStage = new Stage();
+        this.editPeopleStage.setScene(newPeopleScene);
+        this.editPeopleStage.setMinWidth(WIDTH/2);
+        this.editPeopleStage.setMinHeight(HEIGHT);
+        this.editPeopleStage.setTitle("Edit Person");
     }
 
     /**
@@ -161,5 +172,14 @@ public class PeopleUI {
     public Stage getNewPeopleStage() {
 
         return newPeopleStage;
+    }
+
+    /**
+     * Method: getEditPeopleStage
+     * @return editPeopleStage
+     */
+    public Stage getEditPeopleStage() {
+
+        return editPeopleStage;
     }
 }

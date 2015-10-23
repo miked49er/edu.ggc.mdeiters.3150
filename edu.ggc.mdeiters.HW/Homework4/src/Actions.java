@@ -8,6 +8,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+import javafx.util.converter.IntegerStringConverter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -32,6 +33,7 @@ public class Actions extends Application {
     private PersonReader reader;
     private PeopleWriter write;
     private NewPersonView newPersonView;
+    private NewPersonView editPersonView;
     private PersonViewList personViewList;
     private PeopleUI ui;
     private HashSet< Person > people;
@@ -43,6 +45,7 @@ public class Actions extends Application {
         this.reader = new PersonReader();
         this.write = new PeopleWriter();
         this.newPersonView = new NewPersonView();
+        this.editPersonView = new NewPersonView();
         this.personViewList = new PersonViewList();
         this.mainStage = new Stage();
 
@@ -54,7 +57,7 @@ public class Actions extends Application {
 
             people = reader.readPeople(saveFile);
 
-            if (!people.isEmpty()) {
+            if ( !people.isEmpty() ) {
 
                 personViewList.setPeople(people);
             }
@@ -77,12 +80,12 @@ public class Actions extends Application {
             System.out.println(ioe.getMessage());
         }
 
-        this.ui = new PeopleUI(newPersonView, personViewList, mainStage);
+        this.ui = new PeopleUI(newPersonView, editPersonView, personViewList, mainStage);
         stageClose();
 
         buttons();
         fields();
-        columnEdit();
+//        columnEdit();
     }
 
     /**
@@ -176,13 +179,17 @@ public class Actions extends Application {
      */
     private void fields() {
 
+        /*************************************************************
+         *                  New Person View                          *
+         *************************************************************/
+
         // firstField
 
-        newPersonView.getFirstField().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        newPersonView.getFirstField().setOnKeyPressed(new EventHandler< KeyEvent >() {
             @Override
             public void handle( KeyEvent event ) {
 
-                if (event.getCode() == KeyCode.ENTER) {
+                if ( event.getCode() == KeyCode.ENTER ) {
 
                     createPerson();
                 }
@@ -191,7 +198,7 @@ public class Actions extends Application {
 
         // lastField
 
-        newPersonView.getLastField().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        newPersonView.getLastField().setOnKeyPressed(new EventHandler< KeyEvent >() {
             @Override
             public void handle( KeyEvent event ) {
 
@@ -204,7 +211,7 @@ public class Actions extends Application {
 
         // idField
 
-        newPersonView.getIdField().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        newPersonView.getIdField().setOnKeyPressed(new EventHandler< KeyEvent >() {
             @Override
             public void handle( KeyEvent event ) {
 
@@ -217,7 +224,7 @@ public class Actions extends Application {
 
         // cityField
 
-        newPersonView.getCityField().setOnKeyPressed(new EventHandler<KeyEvent>() {
+        newPersonView.getCityField().setOnKeyPressed(new EventHandler< KeyEvent >() {
             @Override
             public void handle( KeyEvent event ) {
 
@@ -227,65 +234,135 @@ public class Actions extends Application {
                 }
             }
         });
+
+
+        /*************************************************************
+         *                  Edit Person View                         *
+         *************************************************************/
+
+        // firstField
+
+        editPersonView.getFirstField().setOnKeyPressed(new EventHandler< KeyEvent >() {
+            @Override
+            public void handle( KeyEvent event ) {
+
+                if ( event.getCode() == KeyCode.ENTER ) {
+
+                    editPerson();
+                }
+            }
+        });
+
+        // lastField
+
+        editPersonView.getLastField().setOnKeyPressed(new EventHandler< KeyEvent >() {
+            @Override
+            public void handle( KeyEvent event ) {
+
+                if ( event.getCode() == KeyCode.ENTER ) {
+
+                    editPerson();
+                }
+            }
+        });
+
+        // idField
+
+        editPersonView.getIdField().setOnKeyPressed(new EventHandler< KeyEvent >() {
+            @Override
+            public void handle( KeyEvent event ) {
+
+                if ( event.getCode() == KeyCode.ENTER ) {
+
+                    editPerson();
+                }
+            }
+        });
+
+        // cityField
+
+        editPersonView.getCityField().setOnKeyPressed(new EventHandler< KeyEvent >() {
+            @Override
+            public void handle( KeyEvent event ) {
+
+                if ( event.getCode() == KeyCode.ENTER ) {
+
+                    editPerson();
+                }
+            }
+        });
     }
 
     /**
      * Method: columnEdit
      * Description: Create all of the column editing actions
      */
-    private void columnEdit() {
+//    private void columnEdit() {
+//
+//        // firstCol
+//
+//        personViewList.getFirstCol().setCellFactory(TextFieldTableCell.forTableColumn());
+//        personViewList.getFirstCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, String > >() {
+//            @Override
+//            public void handle( TableColumn.CellEditEvent< Person, String > event ) {
+//
+//                event.getTableView().getItems().get(event.getTablePosition().getRow()).setFirstName(event.getNewValue());
+//            }
+//        });
+//
+//        // lastCol
+//
+//        personViewList.getLastCol().setCellFactory(TextFieldTableCell.forTableColumn());
+//        personViewList.getLastCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, String > >() {
+//            @Override
+//            public void handle( TableColumn.CellEditEvent< Person, String > event ) {
+//
+//                event.getTableView().getItems().get(event.getTablePosition().getRow()).setLastName(event.getNewValue());
+//            }
+//        });
+//
+//        // idCol
+//
+//        personViewList.getIdCol().setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
+//        personViewList.getIdCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, Integer > >() {
+//            @Override
+//            public void handle( TableColumn.CellEditEvent< Person, Integer > event ) {
+//
+//                try {
+//
+//                    int tempId = event.getNewValue().intValue();
+//                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setIdNum(tempId);
+////                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setIdNum(event.getNewValue().intValue());
+//                    personViewList.setErrorText("");
+//                }
+//                catch ( NumberFormatException nfe ) { // Reprompt the user
+//
+//                    personViewList.setErrorText("Please enter a number in \nthe ID field.");
+//                }
+//            }
+//        });
+//
+//        // cityCol
+//
+//        personViewList.getCityCol().setCellFactory(TextFieldTableCell.forTableColumn());
+//        personViewList.getCityCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, String > >() {
+//            @Override
+//            public void handle( TableColumn.CellEditEvent< Person, String > event ) {
+//
+//                event.getTableView().getItems().get(event.getTablePosition().getRow()).setCity(event.getNewValue());
+//            }
+//        });
+//    }
 
-        // firstCol
+    public void editPeople() {
 
-        personViewList.getFirstCol().setCellFactory(TextFieldTableCell.forTableColumn());
-        personViewList.getFirstCol().setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Person, String>>() {
-            @Override
-            public void handle( TableColumn.CellEditEvent<Person, String> event ) {
+        Person person = personViewList.getTableView().getSelectionModel().getSelectedItem();
 
-                event.getTableView().getItems().get(event.getTablePosition().getRow()).setFirstName(event.getNewValue());
-            }
-        });
-
-        // lastCol
-
-        personViewList.getLastCol().setCellFactory(TextFieldTableCell.forTableColumn());
-        personViewList.getLastCol().setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Person, String>>() {
-            @Override
-            public void handle( TableColumn.CellEditEvent<Person, String> event ) {
-
-                event.getTableView().getItems().get(event.getTablePosition().getRow()).setLastName(event.getNewValue());
-            }
-        });
-
-        // idCol
-
-        personViewList.getIdCol().setCellFactory(TextFieldTableCell.forTableColumn());
-        personViewList.getIdCol().setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Person, Integer>>() {
-            @Override
-            public void handle( TableColumn.CellEditEvent<Person, Integer> event ) {
-
-                try {
-
-                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setIdNum(Integer.parseInt(String.valueOf(event.getNewValue())));
-                    personViewList.setErrorText("");
-                }
-                catch ( NumberFormatException nfe ) { // Reprompt the user
-
-                    personViewList.setErrorText("Please enter a number in \nthe ID field.");
-                }
-            }
-        });
-
-        // cityCol
-
-        personViewList.getCityCol().setCellFactory(TextFieldTableCell.forTableColumn());
-        personViewList.getCityCol().setOnEditCommit(new EventHandler<TableColumn.CellEditEvent<Person, String>>() {
-            @Override
-            public void handle( TableColumn.CellEditEvent<Person, String> event ) {
-
-                event.getTableView().getItems().get(event.getTablePosition().getRow()).setCity(event.getNewValue());
-            }
-        });
+        editPersonView.getFirstField().setText(person.getFirstName());
+        editPersonView.getLastField().setText(person.getLastName());
+        editPersonView.getIdField().setText("" + person.getIdNum());
+        editPersonView.getCityField().setText(person.getCity());
+        ui.getEditPeopleStage().show();
     }
 
     /**
@@ -303,18 +380,28 @@ public class Actions extends Application {
                 save();
                 ui.getMainStage().close();
                 ui.getNewPeopleStage().close();
+                ui.getEditPeopleStage().close();
                 Platform.exit();
             }
         });
 
         // newPeopleStage
 
-        ui.getNewPeopleStage().setOnCloseRequest(new EventHandler<WindowEvent>() {
+        ui.getNewPeopleStage().setOnCloseRequest(new EventHandler< WindowEvent >() {
             @Override
             public void handle( WindowEvent event ) {
 
                 newPersonView.clear();
                 ui.getNewPeopleStage().close();
+            }
+        });
+
+        ui.getEditPeopleStage().setOnCloseRequest(new EventHandler< WindowEvent >() {
+            @Override
+            public void handle( WindowEvent event ) {
+
+                editPersonView.clear();
+                ui.getEditPeopleStage().close();
             }
         });
     }
@@ -363,9 +450,71 @@ public class Actions extends Application {
             person.setIdNum(id);
             person.setCity(city);
 
-            for ( Person element: people ) { // Check for identical id numbers
+            for ( Person element : people ) { // Check for identical id numbers
 
-                if (person.getIdNum() == element.getIdNum()) { // Throw an error if id number is not unique
+                if ( person.getIdNum() == element.getIdNum() ) { // Throw an error if id number is not unique
+
+                    throw new EmptyFieldsException("Please enter an unique id");
+                }
+            }
+
+            // Add person to people
+
+            people.add(person);
+
+            // Reset the UI hashset
+
+            personViewList.setPeople(people);
+
+            newPersonView.clear();
+            ui.getNewPeopleStage().close();
+        }
+        catch ( EmptyFieldsException efe ) {
+
+            newPersonView.setErrorText(efe.getMessage());
+        }
+        catch ( NumberFormatException nfe ) { // Reprompt the user
+
+            newPersonView.setErrorText("Please enter a number in \nthe ID field.");
+        }
+    }
+
+    /**
+     * Method: editPerson
+     * Description: Create a new Person
+     */
+    private void editPerson() {
+
+        // Check to see if the content in the fields is valid
+
+        try {
+
+            // If any of the fields are empty then throw an error
+
+            if ( editPersonView.getFirstField().getText().isEmpty() || editPersonView.getLastField().getText().isEmpty() || editPersonView.getIdField().getText().isEmpty() || editPersonView.getCityField().getText().isEmpty() ) {
+
+                throw new EmptyFieldsException("Please fill out all fields");
+            }
+
+            // Attempt to create the person fields
+
+            String first = editPersonView.getFirstField().getText();
+            String last = editPersonView.getLastField().getText();
+            int id = Integer.parseInt(editPersonView.getIdField().getText());
+            String city = editPersonView.getCityField().getText();
+
+            // Create a new Person
+
+            Person person = new Person();
+
+            person.setFirstName(first);
+            person.setLastName(last);
+            person.setIdNum(id);
+            person.setCity(city);
+
+            for ( Person element : people ) { // Check for identical id numbers
+
+                if ( person.getIdNum() == element.getIdNum() ) { // Throw an error if id number is not unique
 
                     throw new EmptyFieldsException("Please enter an unique id");
                 }

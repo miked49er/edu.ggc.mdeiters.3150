@@ -187,6 +187,15 @@ public class PersonViewList {
     }
 
     /**
+     * Method: getTableView
+     * @return tableView TableView<Person>
+     */
+    public TableView< Person > getTableView() {
+
+        return tableView;
+    }
+
+    /**
      * Method: getFirstCol
      * @return firstCol TableColumn
      */
