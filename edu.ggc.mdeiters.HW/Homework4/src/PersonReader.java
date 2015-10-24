@@ -1,4 +1,5 @@
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -16,7 +17,7 @@ import java.util.Iterator;
 public class PersonReader {
 
     private File file;
-    private HashSet< Person > people;
+    private ArrayList< Person > people;
 
     /**
      * Constructor: PersonReader
@@ -24,7 +25,7 @@ public class PersonReader {
     public PersonReader() {
 
         this.file = null;
-        this.people = new HashSet<>();
+        this.people = new ArrayList<>();
     }
 
     /**
@@ -33,7 +34,7 @@ public class PersonReader {
      */
     public PersonReader( File file ) {
         this.file = file;
-        this.people = new HashSet<>();
+        this.people = new ArrayList<>();
     }
 
     /**
@@ -48,12 +49,12 @@ public class PersonReader {
     /**
      * Method: readPeople
      * @param file String of the file location
-     * @return people HastSet of firstNames
+     * @return people Arraylist of firstNames
      * @throws ClassNotFoundException
      * @throws IOException
      * Description: Reads the binary files into a HashSet
      */
-    public HashSet< Person > readPeople(String file) throws ClassNotFoundException, IOException {
+    public ArrayList< Person > readPeople(String file) throws ClassNotFoundException, IOException {
 
         try {
 

@@ -51,12 +51,12 @@ public class PeopleWriter {
 
     /**
      * Method: writeOut
-     * @param list HashSet of Person
+     * @param list ArrayList of Person
      * @param file String of the file location
      * @throws IOException
      * Description: Write Person objects to a binary file
      */
-    public void writeOut( HashSet< Person > list, String file) throws IOException {
+    public void writeOut( ArrayList< Person > list, String file) throws IOException {
 
         ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(file));
 

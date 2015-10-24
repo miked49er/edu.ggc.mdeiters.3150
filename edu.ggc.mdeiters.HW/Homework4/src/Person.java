@@ -93,16 +93,6 @@ public class Person implements Serializable {
     }
 
     /**
-     * Method: setIdNum
-     * @param idNum
-     * @throws NumberFormatException
-     */
-    public void setIdNum( String idNum ) throws NumberFormatException {
-
-        this.idNum = Integer.parseInt(idNum);
-    }
-
-    /**
      * @return the city
      */
     public String getCity() {

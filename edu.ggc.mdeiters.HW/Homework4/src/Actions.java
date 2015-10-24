@@ -2,18 +2,18 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.util.converter.IntegerStringConverter;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Class: Actions
@@ -36,10 +36,16 @@ public class Actions extends Application {
     private NewPersonView editPersonView;
     private PersonViewList personViewList;
     private PeopleUI ui;
-    private HashSet< Person > people;
+    private ArrayList< Person > people;
     private Stage mainStage;
+    private Person editPerson;
 
-    @Override
+    /**
+     * Method: start
+     * @param primaryStage
+     * @throws Exception
+     * Description: Setup the application
+     */
     public void start( Stage primaryStage ) throws Exception {
 
         this.reader = new PersonReader();
@@ -49,11 +55,13 @@ public class Actions extends Application {
         this.personViewList = new PersonViewList();
         this.mainStage = new Stage();
 
-        this.people = new HashSet<>();
+        this.editPerson = null;
+
+        this.people = new ArrayList<>();
 
         try {
 
-            // Read the file into a hashset
+            // Read the file into a arraylist
 
             people = reader.readPeople(saveFile);
 
@@ -85,7 +93,6 @@ public class Actions extends Application {
 
         buttons();
         fields();
-//        columnEdit();
     }
 
     /**
@@ -113,18 +120,6 @@ public class Actions extends Application {
      */
     private void buttons() {
 
-        // View People Button
-
-        ui.getViewPeopleBtn().setOnAction(new EventHandler< ActionEvent >() {
-            @Override
-            public void handle( ActionEvent event ) {
-
-                // Change the view to the Person List View
-
-                ui.getPane().setCenter(personViewList.getPane());
-            }
-        });
-
         // New Person Button
 
         ui.getNewPersonBtn().setOnAction(new EventHandler< ActionEvent >() {
@@ -132,8 +127,10 @@ public class Actions extends Application {
             public void handle( ActionEvent event ) {
 
                 // Change the view to the New Person Dialog
+                // Request Focus to the firstField
 
                 newPersonView.clear();
+                newPersonView.getFirstField().requestFocus();
                 ui.getNewPeopleStage().show();
             }
         });
@@ -149,6 +146,34 @@ public class Actions extends Application {
                 save();
             }
         });
+
+        // Edit Button
+
+        personViewList.getEditBtn().setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
+
+                // Edit the Person
+
+                editPeople();
+            }
+        });
+
+        // Delete Button
+
+        personViewList.getDeleteBtn().setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
+
+                // Delete the Person
+
+                deletePerson();
+            }
+        });
+
+        /*************************************************************
+         *                  New Person View                          *
+         *************************************************************/
 
         // Ok Button
 
@@ -169,6 +194,35 @@ public class Actions extends Application {
                 // Clear the text fields
 
                 newPersonView.clear();
+                ui.getNewPeopleStage().close();
+            }
+        });
+
+        /*************************************************************
+         *                  Edit Person View                         *
+         *************************************************************/
+
+        // Ok Button
+
+        editPersonView.getOkBtn().setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
+
+                editPerson();
+            }
+        });
+
+        // Cancel Button
+
+        editPersonView.getCancelBtn().setOnAction(new EventHandler< ActionEvent >() {
+            @Override
+            public void handle( ActionEvent event ) {
+
+                // Clear the text fields
+
+                editPersonView.clear();
+                editPerson = null;
+                ui.getEditPeopleStage().close();
             }
         });
     }
@@ -235,7 +289,6 @@ public class Actions extends Application {
             }
         });
 
-
         /*************************************************************
          *                  Edit Person View                         *
          *************************************************************/
@@ -294,75 +347,31 @@ public class Actions extends Application {
     }
 
     /**
-     * Method: columnEdit
-     * Description: Create all of the column editing actions
+     * Method: editPeople
+     * Description: Setup the editPerson stage
      */
-//    private void columnEdit() {
-//
-//        // firstCol
-//
-//        personViewList.getFirstCol().setCellFactory(TextFieldTableCell.forTableColumn());
-//        personViewList.getFirstCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, String > >() {
-//            @Override
-//            public void handle( TableColumn.CellEditEvent< Person, String > event ) {
-//
-//                event.getTableView().getItems().get(event.getTablePosition().getRow()).setFirstName(event.getNewValue());
-//            }
-//        });
-//
-//        // lastCol
-//
-//        personViewList.getLastCol().setCellFactory(TextFieldTableCell.forTableColumn());
-//        personViewList.getLastCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, String > >() {
-//            @Override
-//            public void handle( TableColumn.CellEditEvent< Person, String > event ) {
-//
-//                event.getTableView().getItems().get(event.getTablePosition().getRow()).setLastName(event.getNewValue());
-//            }
-//        });
-//
-//        // idCol
-//
-//        personViewList.getIdCol().setCellFactory(TextFieldTableCell.forTableColumn(new IntegerStringConverter()));
-//        personViewList.getIdCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, Integer > >() {
-//            @Override
-//            public void handle( TableColumn.CellEditEvent< Person, Integer > event ) {
-//
-//                try {
-//
-//                    int tempId = event.getNewValue().intValue();
-//                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setIdNum(tempId);
-////                    event.getTableView().getItems().get(event.getTablePosition().getRow()).setIdNum(event.getNewValue().intValue());
-//                    personViewList.setErrorText("");
-//                }
-//                catch ( NumberFormatException nfe ) { // Reprompt the user
-//
-//                    personViewList.setErrorText("Please enter a number in \nthe ID field.");
-//                }
-//            }
-//        });
-//
-//        // cityCol
-//
-//        personViewList.getCityCol().setCellFactory(TextFieldTableCell.forTableColumn());
-//        personViewList.getCityCol().setOnEditCommit(new EventHandler< TableColumn.CellEditEvent< Person, String > >() {
-//            @Override
-//            public void handle( TableColumn.CellEditEvent< Person, String > event ) {
-//
-//                event.getTableView().getItems().get(event.getTablePosition().getRow()).setCity(event.getNewValue());
-//            }
-//        });
-//    }
-
     public void editPeople() {
 
-        Person person = personViewList.getTableView().getSelectionModel().getSelectedItem();
+        this.editPerson = personViewList.getTableView().getSelectionModel().getSelectedItem();
 
-        editPersonView.getFirstField().setText(person.getFirstName());
-        editPersonView.getLastField().setText(person.getLastName());
-        editPersonView.getIdField().setText("" + person.getIdNum());
-        editPersonView.getCityField().setText(person.getCity());
-        ui.getEditPeopleStage().show();
+        if ( editPerson != null ) {
+
+            // Populate the textfields
+            // Request the focus to the firstfield
+
+            personViewList.setErrorText("");
+            editPersonView.getFirstField().setText(editPerson.getFirstName());
+            editPersonView.getLastField().setText(editPerson.getLastName());
+            editPersonView.getIdField().setText("" + editPerson.getIdNum());
+            editPersonView.getCityField().setText(editPerson.getCity());
+
+            editPersonView.getFirstField().requestFocus();
+            ui.getEditPeopleStage().show();
+        }
+        else { // Person not selected so show an error
+
+            personViewList.setErrorText("Please select a person to edit");
+        }
     }
 
     /**
@@ -407,17 +416,6 @@ public class Actions extends Application {
     }
 
     /**
-     * Method: getFile
-     * @return String of the file location
-     * Description: Returns the file location
-     */
-    private String getFile() {
-
-        URL path = PeopleUI.class.getResource("data.dat");
-        return path.getPath();
-    }
-
-    /**
      * Method: createPerson
      * Description: Create a new Person
      */
@@ -429,7 +427,10 @@ public class Actions extends Application {
 
             // If any of the fields are empty then throw an error
 
-            if ( newPersonView.getFirstField().getText().isEmpty() || newPersonView.getLastField().getText().isEmpty() || newPersonView.getIdField().getText().isEmpty() || newPersonView.getCityField().getText().isEmpty() ) {
+            if ( newPersonView.getFirstField().getText().isEmpty() ||
+                    newPersonView.getLastField().getText().isEmpty() ||
+                    newPersonView.getIdField().getText().isEmpty() ||
+                    newPersonView.getCityField().getText().isEmpty() ) {
 
                 throw new EmptyFieldsException("Please fill out all fields");
             }
@@ -462,7 +463,7 @@ public class Actions extends Application {
 
             people.add(person);
 
-            // Reset the UI hashset
+            // Reset the UI arraylist
 
             personViewList.setPeople(people);
 
@@ -491,7 +492,10 @@ public class Actions extends Application {
 
             // If any of the fields are empty then throw an error
 
-            if ( editPersonView.getFirstField().getText().isEmpty() || editPersonView.getLastField().getText().isEmpty() || editPersonView.getIdField().getText().isEmpty() || editPersonView.getCityField().getText().isEmpty() ) {
+            if ( editPersonView.getFirstField().getText().isEmpty() ||
+                    editPersonView.getLastField().getText().isEmpty() ||
+                    editPersonView.getIdField().getText().isEmpty() ||
+                    editPersonView.getCityField().getText().isEmpty() ) {
 
                 throw new EmptyFieldsException("Please fill out all fields");
             }
@@ -503,41 +507,79 @@ public class Actions extends Application {
             int id = Integer.parseInt(editPersonView.getIdField().getText());
             String city = editPersonView.getCityField().getText();
 
-            // Create a new Person
+            for ( int i = 0; i < people.size(); i++ ) { // Check for identical id numbers
 
-            Person person = new Person();
-
-            person.setFirstName(first);
-            person.setLastName(last);
-            person.setIdNum(id);
-            person.setCity(city);
-
-            for ( Person element : people ) { // Check for identical id numbers
-
-                if ( person.getIdNum() == element.getIdNum() ) { // Throw an error if id number is not unique
+                if ( id == people.get(i).getIdNum() && id != editPerson.getIdNum() ) { // Throw an error if id number is not unique
 
                     throw new EmptyFieldsException("Please enter an unique id");
                 }
+                else if ( editPerson == people.get(i) ) {
+
+                    // Update the Person
+
+                    this.people.get(i).setFirstName(first);
+                    this.people.get(i).setLastName(last);
+                    this.people.get(i).setIdNum(id);
+                    this.people.get(i).setCity(city);
+
+                    editPerson = null;
+                }
             }
 
-            // Add person to people
-
-            people.add(person);
-
-            // Reset the UI hashset
+            // Reset the UI arraylist
 
             personViewList.setPeople(people);
 
-            newPersonView.clear();
-            ui.getNewPeopleStage().close();
+            editPersonView.clear();
+            ui.getEditPeopleStage().close();
         }
         catch ( EmptyFieldsException efe ) {
 
-            newPersonView.setErrorText(efe.getMessage());
+            editPersonView.setErrorText(efe.getMessage());
         }
         catch ( NumberFormatException nfe ) { // Reprompt the user
 
-            newPersonView.setErrorText("Please enter a number in \nthe ID field.");
+            editPersonView.setErrorText("Please enter a number in \nthe ID field.");
+        }
+    }
+
+    private void deletePerson() {
+
+        Person tempDelete = personViewList.getTableView().getSelectionModel().getSelectedItem();
+
+        // Alert to confirm the deletion of the person
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText("Are you sure you want to delete this?");
+        alert.setContentText("This will pernamently delete this person.");
+
+        Optional< ButtonType > result = alert.showAndWait();
+
+        if ( result.get() == ButtonType.OK ) {
+
+            // If the user presses ok
+
+            boolean personFound = false;
+
+            // Loop through people until the person to delete is found
+            // Once found it deletes the person from people
+
+            for ( int i = 0; !personFound && i < people.size(); i++ ) {
+
+                if ( people.get(i).getIdNum() == tempDelete.getIdNum() ) {
+
+                    personFound = true;
+                    people.remove(i);
+                    personViewList.setPeople(people);
+                }
+            }
+        }
+        else {
+
+            // If the user pressed cancel or closed the dialog
+            // Do nothing
+
         }
     }
 }

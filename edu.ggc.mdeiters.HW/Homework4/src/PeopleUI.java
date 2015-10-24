@@ -37,7 +37,6 @@ public class PeopleUI {
     private FlowPane sidePane;
 
     private Button newPersonBtn;
-    private Button viewPeopleBtn;
 
     /**
      * Constructor: PeopleUI
@@ -67,9 +66,6 @@ public class PeopleUI {
         newPersonBtn.setMinWidth(BUTTON_WIDTH);
         newPersonBtn.setMinHeight(BUTTON_HEIGHT);
         newPersonBtn.setStyle("-fx-background-color:#fff"); // White
-        viewPeopleBtn.setMinWidth(BUTTON_WIDTH);
-        viewPeopleBtn.setMinHeight(BUTTON_HEIGHT);
-        viewPeopleBtn.setStyle("-fx-background-color:#fff"); // White
 
         viewList.setBackground("#fff"); // White
         newPerson.setBackground("#fff"); // White
@@ -81,8 +77,7 @@ public class PeopleUI {
         sidePane.setVgap(15);
         sidePane.setPadding(new Insets(15, 25, 15, 25));
         sidePane.setStyle("-fx-background-color:#E60000"); // Dark Red
-        sidePane.getChildren().add(0, viewPeopleBtn);
-        sidePane.getChildren().add(1, newPersonBtn);
+        sidePane.getChildren().add(0, newPersonBtn);
 
         pane.setLeft(sidePane);
         pane.setCenter(viewList.getPane());
@@ -105,7 +100,6 @@ public class PeopleUI {
         this.pane = new BorderPane();
         this.sidePane = new FlowPane();
         this.newPersonBtn = new Button("New Person");
-        this.viewPeopleBtn = new Button("View People");
 
         this.primaryScene = new Scene(pane, WIDTH, HEIGHT);
         this.mainStage.setScene(primaryScene);
@@ -123,7 +117,7 @@ public class PeopleUI {
 
         this.editPeopleScene = new Scene(editPerson.getPane(), WIDTH/2, HEIGHT);
         this.editPeopleStage = new Stage();
-        this.editPeopleStage.setScene(newPeopleScene);
+        this.editPeopleStage.setScene(editPeopleScene);
         this.editPeopleStage.setMinWidth(WIDTH/2);
         this.editPeopleStage.setMinHeight(HEIGHT);
         this.editPeopleStage.setTitle("Edit Person");
@@ -136,15 +130,6 @@ public class PeopleUI {
     public Button getNewPersonBtn() {
 
         return newPersonBtn;
-    }
-
-    /**
-     * Method: getViewPeopleBtn
-     * @return viewPeopleBtn Button
-     */
-    public Button getViewPeopleBtn() {
-
-        return viewPeopleBtn;
     }
 
     /**

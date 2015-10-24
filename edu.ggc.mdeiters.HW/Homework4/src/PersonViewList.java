@@ -1,12 +1,16 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -25,11 +29,13 @@ import java.util.HashSet;
 public class PersonViewList {
 
     private final int columnWidth = 49;
-    private HashSet<Person> people;
+    private ArrayList< Person > people;
     private BorderPane main;
-    private BorderPane buttons;
-    private TableView<Person> tableView;
+    private FlowPane buttons;
+    private TableView< Person > tableView;
     private Button saveBtn;
+    private Button editBtn;
+    private Button deleteBtn;
     private Label errorTxt;
     private TableColumn nameCol;
     private TableColumn firstCol;
@@ -42,26 +48,30 @@ public class PersonViewList {
      */
     public PersonViewList() {
 
-        this.people = new HashSet<>();
+        this.people = new ArrayList<>();
         this.main = new BorderPane();
-        this.buttons = new BorderPane();
+        this.buttons = new FlowPane();
         this.tableView = new TableView<>();
         this.saveBtn = new Button("Save");
+        this.editBtn = new Button("Edit");
+        this.deleteBtn = new Button("Delete");
 
         setupPane();
     }
 
     /**
      * Constructor: PersonViewList
-     * @param people HashSet of Person
+     * @param people Arraylist of Person
      */
-    public PersonViewList( HashSet<Person> people ) {
+    public PersonViewList( ArrayList< Person > people ) {
 
         this.people = people;
         this.main = new BorderPane();
-        this.buttons = new BorderPane();
+        this.buttons = new FlowPane();
         this.tableView = new TableView<>();
         this.saveBtn = new Button("Save");
+        this.editBtn = new Button("Edit");
+        this.deleteBtn = new Button("Delete");
 
         setupPane();
     }
@@ -76,18 +86,30 @@ public class PersonViewList {
         saveBtn.setMinHeight(30);
         saveBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
 
-        errorTxt = new Label();
-        buttons.setLeft(errorTxt);
-        buttons.setRight(saveBtn);
-        buttons.setPadding(new Insets(0, 0, 10, 0));
+        editBtn.setMinWidth(100);
+        editBtn.setMinHeight(30);
+        editBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
 
+        deleteBtn.setMinWidth(100);
+        deleteBtn.setMinHeight(30);
+        deleteBtn.setStyle("-fx-background-color:#e6e6e6"); // Off White
+
+        errorTxt = new Label();
+
+        buttons.setHgap(10);
+        buttons.setVgap(10);
+        buttons.getChildren().add(saveBtn);
+        buttons.getChildren().add(editBtn);
+        buttons.getChildren().add(deleteBtn);
+        buttons.getChildren().add(errorTxt);
+        buttons.setPadding(new Insets(0, 0, 10, 0));
 
         // Assign the people to the listview
 
         tableView.setItems(getObservableList());
         tableView.autosize();
         tableView.setMaxHeight(325);
-        tableView.setEditable(true);
+        tableView.setEditable(false);
 
         this.nameCol = new TableColumn("Name");
         this.firstCol = new TableColumn("First");
@@ -95,10 +117,10 @@ public class PersonViewList {
         this.idCol = new TableColumn("ID");
         this.cityCol = new TableColumn("City");
 
-        firstCol.setCellValueFactory(new PropertyValueFactory<Person, String>("firstName"));
-        lastCol.setCellValueFactory(new PropertyValueFactory<Person, String>("lastName"));
-        idCol.setCellValueFactory(new PropertyValueFactory<Person, Integer>("idNum"));
-        cityCol.setCellValueFactory(new PropertyValueFactory<Person, String>("city"));
+        firstCol.setCellValueFactory(new PropertyValueFactory< Person, String >("firstName"));
+        lastCol.setCellValueFactory(new PropertyValueFactory< Person, String >("lastName"));
+        idCol.setCellValueFactory(new PropertyValueFactory< Person, Integer >("idNum"));
+        cityCol.setCellValueFactory(new PropertyValueFactory< Person, String >("city"));
 
         nameCol.getColumns().addAll(firstCol, lastCol);
         tableView.getColumns().addAll(nameCol, idCol, cityCol);
@@ -117,15 +139,9 @@ public class PersonViewList {
      * @return list ObservableList
      * Description: Creates an ObservableList from people
      */
-    private ObservableList<Person> getObservableList() {
+    private ObservableList< Person > getObservableList() {
 
-        ArrayList<Person> array = new ArrayList<>();
-
-        for (Person person : people) { // Add all of the people in the hashset to the arraylist
-
-            array.add(person);
-        }
-        ObservableList<Person> list = FXCollections.observableArrayList(array);
+        ObservableList< Person > list = FXCollections.observableArrayList(people);
 
         return list;
     }
@@ -135,7 +151,7 @@ public class PersonViewList {
      * @param str String
      * Description: Display the error message
      */
-    public void setErrorText(String str) {
+    public void setErrorText( String str ) {
 
         errorTxt.setText(str);
     }
@@ -159,29 +175,48 @@ public class PersonViewList {
     }
 
     /**
-     * Method: setPeople
-     * @param people HashSet of Person
+     * Method: getEditBtn
+     * @return editBtn Button
      */
-    public void setPeople( HashSet<Person> people ) {
+    public Button getEditBtn() {
 
-        this.people = people;
-        tableView.setItems(getObservableList());
+        return editBtn;
+    }
+
+    /**
+     * Method: getDeleteBtn
+     * @return deleteBtn Button
+     */
+    public Button getDeleteBtn() {
+
+        return deleteBtn;
     }
 
     /**
      * Method: getPeople
-     * @return people HashSet of Person
+     * @return people Arraylist of Person
      */
-    public HashSet< Person > getPeople() {
+    public ArrayList< Person > getPeople() {
 
         return people;
+    }
+
+    /**
+     * Method: setPeople
+     * @param people Arraylist of Person
+     */
+    public void setPeople( ArrayList< Person > people ) {
+
+        this.people = people;
+        tableView.setItems(getObservableList());
+        tableView.refresh();
     }
 
     /**
      * Method: setBackground
      * @param color Color to make the pane background
      */
-    public void setBackground(String color) {
+    public void setBackground( String color ) {
 
         main.setStyle("-fx-background-color:" + color);
     }
