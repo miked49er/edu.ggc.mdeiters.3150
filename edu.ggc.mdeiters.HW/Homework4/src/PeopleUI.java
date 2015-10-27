@@ -115,6 +115,7 @@ public class PeopleUI {
         this.newPeopleStage.setMinHeight(HEIGHT);
         this.newPeopleStage.setTitle("New Person");
 
+        this.editPerson.getTitle().setText("Edit the person");
         this.editPeopleScene = new Scene(editPerson.getPane(), WIDTH/2, HEIGHT);
         this.editPeopleStage = new Stage();
         this.editPeopleStage.setScene(editPeopleScene);
