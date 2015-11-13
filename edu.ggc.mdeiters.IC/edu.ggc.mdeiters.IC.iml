@@ -6,6 +6,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Multi-Thread/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Multithreading/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/PracQuiz/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
