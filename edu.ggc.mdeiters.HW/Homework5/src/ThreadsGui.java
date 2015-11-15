@@ -31,39 +31,60 @@ public class ThreadsGui extends Application {
     private Thread thread1;
     private Thread thread2;
 
-    @Override
+    /**
+     * Method: start
+     * @param primaryStage
+     * @throws Exception
+     * Description: Setup the stage and start the treads
+     */
     public void start( Stage primaryStage ) throws Exception {
 
-        circle = new CircleRunnable(120,52,25,80,WIDTH,HEIGHT-100);
+        circle = new CircleRunnable(120, 52, 25, 80, WIDTH, HEIGHT - 100);
         thread1 = new Thread(circle);
         pane = new Pane();
+
+        // Add circle to pane
+        // Add a 5px black bottom border to pane
+        // Set the min height to the stage height - 98
+
         pane.getChildren().add(circle.getCircle());
         pane.setStyle("-fx-border-color: black; -fx-bottom-border: 5px");
-        pane.setMinHeight(HEIGHT-98);
+        pane.setMinHeight(HEIGHT - 98);
 
         rand = new RandomGenRunnable(WIDTH, 80, 100);
         thread2 = new Thread(rand);
+
+        // Place pane and rand on the borderpane
 
         primaryPane = new BorderPane();
         primaryPane.setTop(pane);
         primaryPane.setBottom(rand);
 
+        // Start the treads
+
         thread1.start();
         thread2.start();
 
-        primaryScene = new Scene(primaryPane,WIDTH,HEIGHT);
+        primaryScene = new Scene(primaryPane, WIDTH, HEIGHT);
         mainStage = new Stage();
         mainStage.setMaxWidth(WIDTH);
         mainStage.setScene(primaryScene);
         mainStage.setTitle("Thread Movement");
         mainStage.show();
 
-        mainStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+        // When the stage is closed
+
+        mainStage.setOnCloseRequest(new EventHandler< WindowEvent >() {
             @Override
             public void handle( WindowEvent event ) {
 
+                // Interrupt the treads
+
                 thread1.interrupt();
                 thread2.interrupt();
+
+                // Close the stage and exit
+
                 mainStage.close();
                 System.exit(0);
             }

@@ -45,10 +45,12 @@ public class Rectangle extends javafx.scene.shape.Rectangle {
      * @param x int
      * @param y int
      */
-    public void setPosition(int x,int y) {
+    public void setPosition( int x, int y ) {
 
         setX(x);
-        setY(y-getHeight());
-//        setY(y);
+
+        // Align rectangles at the bottom
+
+        setY(y - getHeight());
     }
 }

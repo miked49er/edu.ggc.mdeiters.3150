@@ -171,115 +171,130 @@ public class CircleRunnable implements Runnable {
             int sBottom = stageHeight;
 
             while ( true ) {
-//            for (int i=0; i<200; i++) {
 
                 Thread.sleep(timeBetweenMoves);
 
-                if ( upLeft ) {
+                if ( upLeft ) { // Circle is moving up and to the left
+
+                    // Decrement 5
 
                     this.x -= 5;
                     this.y -= 5;
 
-                    if ( this.x - radius < sLeft ) {
+                    if ( this.x - radius < sLeft ) { // Circle has passed the left wall
+
+                        // Adjust x and change direction to upright
 
                         this.upLeft = false;
                         this.upRight = true;
                         this.downLeft = false;
                         this.downRight = false;
-//                        this.y += ( sLeft - this.x );
                         this.x = sLeft + radius;
                     }
-                    if ( this.y - radius < sTop ) {
+                    if ( this.y - radius < sTop ) { // Circle has passed the top wall
+
+                        // Adjust y and change direction to downleft
 
                         this.upLeft = false;
                         this.upRight = false;
                         this.downLeft = true;
                         this.downRight = false;
-//                        this.x += ( sTop - this.y );
                         this.y = sTop + radius;
                     }
                 }
-                else if ( upRight ) {
+                else if ( upRight ) { // Circle is moving up and to the right
+
+                    // Increment 'x' 5
+                    // Decrement 'y' 5
 
                     this.x += 5;
                     this.y -= 5;
 
-                    if ( this.x + radius > sRight ) {
+                    if ( this.x + radius > sRight ) { // Circle has passed the right wall
+
+                        // Adjust x and change direction to upleft
 
                         this.upLeft = true;
                         this.upRight = false;
                         this.downLeft = false;
                         this.downRight = false;
-//                        this.y += ( this.x - sRight );
                         this.x = sRight - radius;
                     }
-                    if ( this.y - radius < sTop ) {
+                    if ( this.y - radius < sTop ) { // Circle has passed the top wall
+
+                        // Adjust y and change direction to downright
 
                         this.upLeft = false;
                         this.upRight = false;
                         this.downLeft = false;
                         this.downRight = true;
-//                        this.x -= ( sTop - this.y );
                         this.y = sTop + radius;
                     }
                 }
-                else if ( downLeft ) {
+                else if ( downLeft ) { // Circle is moving down and to the left
+
+                    // Decrement 'x' 5
+                    // Increment 'y' 5
 
                     this.x -= 5;
                     this.y += 5;
 
-                    if ( this.x - radius < sLeft ) {
+                    if ( this.x - radius < sLeft ) { // Circle has passed the left wall
+
+                        // Adjust x and change direction to downright
 
                         this.upLeft = false;
                         this.upRight = false;
                         this.downLeft = false;
                         this.downRight = true;
-//                        this.y -= ( sLeft - this.x );
                         this.x = sLeft + radius;
                     }
-                    if ( this.y + radius > sBottom ) {
+                    if ( this.y + radius > sBottom ) { // Circle has passed the bottom wall
+
+                        // Adjust y and change direction to upleft
 
                         this.upLeft = true;
                         this.upRight = false;
                         this.downLeft = false;
                         this.downRight = false;
-//                        this.x += ( this.y - sBottom );
                         this.y = sBottom - radius;
                     }
                 }
-                else if ( downRight ) {
+                else if ( downRight ) { // Circle is moving down and to the right
+
+                    // Increment 5
 
                     this.x += 5;
                     this.y += 5;
 
-                    if ( this.x + radius > sRight ) {
+                    if ( this.x + radius > sRight ) { // Circle has passed the right wall
+
+                        // Adjust x and change direction to downleft
 
                         this.upLeft = false;
                         this.upRight = false;
                         this.downLeft = true;
                         this.downRight = false;
-//                        this.y -= ( sRight - this.x );
                         this.x = sRight - radius;
                     }
-                    if ( this.y + radius > sBottom ) {
+                    if ( this.y + radius > sBottom ) { // Circle has passed the bottom wall
+
+                        // Adjust y and change the direction to upright
 
                         this.upLeft = false;
                         this.upRight = true;
                         this.downLeft = false;
                         this.downRight = false;
-//                        this.x -= ( sBottom - this.y );
                         this.y = sBottom - radius;
                     }
                 }
 
-//                System.out.println("X: " + x + " Y: " + y);
                 // Shcedule a javafx position update
 
                 Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
 
-//                        System.out.println("Move");
                         circle.setCenterX(x);
                         circle.setCenterY(y);
                     }
