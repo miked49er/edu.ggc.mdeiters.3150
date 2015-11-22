@@ -8,6 +8,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Multithreading/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/PracQuiz/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/JavaFX-Threading/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/JavaFXGame/src" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
