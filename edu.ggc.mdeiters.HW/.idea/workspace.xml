@@ -1,15 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1ed00a03-4bf4-4ba0-8593-5be4b62458f0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Homework5/src/CircleRunnable.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/Homework5/src/ThreadsGui.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/edu.ggc.mdeiters.HW/HomeWork1/GameCollect.class" afterPath="$PROJECT_DIR$/out/production/edu.ggc.mdeiters.HW/HomeWork1/GameCollect.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/edu.ggc.mdeiters.HW.iml" afterPath="$PROJECT_DIR$/edu.ggc.mdeiters.HW.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/../edu.ggc.mdeiters.IC/edu.ggc.mdeiters.IC.iml" afterPath="$PROJECT_DIR$/../edu.ggc.mdeiters.IC/edu.ggc.mdeiters.IC.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/production/edu.ggc.mdeiters.HW/HomeWork1/Txt/gameList.txt" afterPath="$PROJECT_DIR$/out/production/edu.ggc.mdeiters.HW/HomeWork1/Txt/gameList.txt" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="1ed00a03-4bf4-4ba0-8593-5be4b62458f0" name="Default" comment="" />
     <ignored path="edu.ggc.mdeiters.HW.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -474,7 +466,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="24" width="1366" height="720" extended-state="0" />
+    <frame x="0" y="24" width="1366" height="720" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
