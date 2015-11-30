@@ -7,6 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Homework4/src" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Homework5/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/GameProject/src" isTestSource="false" />
       <excludeFolder url="file://$MODULE_DIR$/src/HomeWork2" />
     </content>
     <orderEntry type="inheritedJdk" />
