@@ -1,5 +1,4 @@
 import javafx.scene.Group;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -29,7 +28,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class Game extends Scene {
 
-    private ArrayList<KeyCode> input;
+    private ArrayList< KeyCode > input;
     private Group root;
     private Canvas canvas;
     private GraphicsContext gc;
@@ -37,7 +36,7 @@ public abstract class Game extends Scene {
     private Lock gameLock;
 
     private Player player;
-    private ArrayList<Sprite> sprites;
+    private ArrayList< Sprite > sprites;
     private double score;
     private int highScore;
     private boolean gameOver;
@@ -77,10 +76,10 @@ public abstract class Game extends Scene {
      * Method: getInput
      * @return input ArrayList<KeyCode>
      */
-    public ArrayList<KeyCode> getInput() {
+    public ArrayList< KeyCode > getInput() {
 
         gameLock.lock();
-        ArrayList<KeyCode> input = this.input;
+        ArrayList< KeyCode > input = this.input;
         gameLock.unlock();
         return input;
     }
@@ -176,7 +175,7 @@ public abstract class Game extends Scene {
      * Method: getSprites
      * @return sprites ArrayList<Sprite>
      */
-    public ArrayList<Sprite> getSprites() {
+    public ArrayList< Sprite > getSprites() {
         return sprites;
     }
 
@@ -265,6 +264,14 @@ public abstract class Game extends Scene {
 
     /**
      * Method: setGameOverSound
+     * @param gameOverMedia Media
+     */
+    public void setGameOverSound( Media gameOverMedia ) {
+        this.gameOverMedia = gameOverMedia;
+    }
+
+    /**
+     * Method: setGameOverSound
      * @param str String
      * Description: Create a new game over sound player
      */
@@ -278,10 +285,14 @@ public abstract class Game extends Scene {
 
     /**
      * Method: setGameOverSound
-     * @param gameOverMedia Media
+     * @param file File
+     * Description: Create a new game over sound player
      */
-    public void setGameOverSound( Media gameOverMedia ) {
-        this.gameOverMedia = gameOverMedia;
+    public void setGameOverSound( File file ) {
+
+        File soundFile = file;
+        this.gameOverMedia = new Media(soundFile.toURI().toString());
+        this.gameOverSound = new MediaPlayer(gameOverMedia);
     }
 
     /**
@@ -337,6 +348,18 @@ public abstract class Game extends Scene {
 
         URL path = Game.class.getResource(str);
         File soundFile = new File(path.getPath());
+        this.bgMedia = new Media(soundFile.toURI().toString());
+        this.bgMusic = new MediaPlayer(bgMedia);
+    }
+
+    /**
+     * Method: setBgMusic
+     * @param file File
+     * Description: Create a background music player
+     */
+    public void setBgMusic( File file ) {
+
+        File soundFile = file;
         this.bgMedia = new Media(soundFile.toURI().toString());
         this.bgMusic = new MediaPlayer(bgMedia);
     }

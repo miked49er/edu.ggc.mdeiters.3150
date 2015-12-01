@@ -2,8 +2,11 @@ import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import java.io.InputStream;
 
 /**
  * Class: Launcher
@@ -18,7 +21,7 @@ import javafx.stage.WindowEvent;
  */
 public class GameLauncher extends Application {
 
-    private final int WIDTH = 600;
+    private final int WIDTH = 1000;
     private final int HEIGHT = 250;
 
     private Stage stage;
@@ -51,14 +54,26 @@ public class GameLauncher extends Application {
     public void start( Stage primaryStage ) throws Exception {
 
         try {
+
+            InputStream run1 = this.getClass().getResourceAsStream("assets/player/player-run-1.png");
+            InputStream run2 = this.getClass().getResourceAsStream("assets/player/player-run-2.png");
+            InputStream run3 = this.getClass().getResourceAsStream("assets/player/player-run-3.png");
+            InputStream run4 = this.getClass().getResourceAsStream("assets/player/player-run-4.png");
+            InputStream jump = this.getClass().getResourceAsStream("assets/player/player-jump.png");
+            InputStream slide = this.getClass().getResourceAsStream("assets/player/player-slide.png");
+            Media jumpingSound = new Media(this.getClass().getResource("assets/sounds/arcade-chirp-08.wav").toURI().toString());
+            Media slidingSound = new Media(this.getClass().getResource("assets/sounds/arcade-movement-01.wav").toURI().toString());
+            Media bgMusic = new Media(this.getClass().getResource("assets/sounds/lost-in-the-echos-instrumental.mp3").toURI().toString());
+            Media gameOver = new Media(this.getClass().getResource("assets/sounds/game-over.wav").toURI().toString());
+
             frames = new Image[] {
-                    new Image("assets/player/player-run-1.png"),
-                    new Image("assets/player/player-run-2.png"),
-                    new Image("assets/player/player-run-3.png"),
-                    new Image("assets/player/player-run-4.png"),
+                    new Image(run1),
+                    new Image(run2),
+                    new Image(run3),
+                    new Image(run4),
             };
-            jumpingImage = new Image("assets/player/player-jump.png");
-            slidingImage = new Image("assets/player/player-slide.png");
+            jumpingImage = new Image(jump);
+            slidingImage = new Image(slide);
 
             player = new Player(frames, .75, jumpingImage, slidingImage);
             player.setNormalWidth(16);
@@ -69,13 +84,13 @@ public class GameLauncher extends Application {
             player.setPositionX(50);
             player.setPositionY(100);
             player.setGravity(70);
-            player.setJumpingMedia("assets/sounds/arcade-chirp-08.wav");
-            player.setSlidingMedia("assets/sounds/arcade-movement-01.wav");
+            player.setJumpingMedia(jumpingSound);
+            player.setSlidingMedia(slidingSound);
 
             root = new Group();
             endlessRunner = new EndlessRunner(WIDTH, HEIGHT, root, player, this);
-            endlessRunner.setBgMusic("assets/sounds/lost-in-the-echos-instrumental.mp3");
-            endlessRunner.setGameOverSound("assets/sounds/game-over.wav");
+            endlessRunner.setBgMusic(bgMusic);
+            endlessRunner.setGameOverSound(gameOver);
             endlessRunner.generateStage(true);
             endlessRunner.playMusic(true);
 
@@ -92,7 +107,7 @@ public class GameLauncher extends Application {
             stage.setScene(endlessRunner);
             stage.show();
 
-            stage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            stage.setOnCloseRequest(new EventHandler< WindowEvent >() {
                 @Override
                 public void handle( WindowEvent event ) {
                     gameThread.interrupt();

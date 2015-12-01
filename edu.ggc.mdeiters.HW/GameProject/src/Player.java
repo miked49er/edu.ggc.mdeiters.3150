@@ -296,6 +296,18 @@ public class Player extends Sprite {
     }
 
     /**
+     * Method: setJumpingMedia
+     * @param file File
+     * Description: Create a jumping sound player
+     */
+    public void setJumpingMedia( File file ) {
+
+        File soundFile = file;
+        this.jumpingMedia = new Media(soundFile.toURI().toString());
+        this.jumpSound = new MediaPlayer(this.jumpingMedia);
+    }
+
+    /**
      * Method: getSlidingMedia
      * @return slidingMedia Media
      */
@@ -321,6 +333,18 @@ public class Player extends Sprite {
     public void setSlidingMedia( String str ) {
         URL path = Player.class.getResource(str);
         File soundFile = new File(path.getPath());
+        this.slidingMedia = new Media(soundFile.toURI().toString());
+        this.slidingSound = new MediaPlayer(this.slidingMedia);
+    }
+
+    /**
+     * Method: setSlidingMedia
+     * @param file File
+     * Description: Create a sliding sound player
+     */
+    public void setSlidingMedia( File file) {
+
+        File soundFile = file;
         this.slidingMedia = new Media(soundFile.toURI().toString());
         this.slidingSound = new MediaPlayer(this.slidingMedia);
     }

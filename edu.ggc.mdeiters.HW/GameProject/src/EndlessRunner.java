@@ -625,7 +625,7 @@ public class EndlessRunner extends Game {
                     "to slide under obsitcals.";
             String escape = "Press ESC to exit";
             placeText(prompt, ( this.getWidth() / 2 ) - 50, 40);
-            placeText(message, 80, 70);
+            placeText(message, 220, 70);
             placeText(escape, 10, 40);
 
             throw new InterruptedException();
@@ -643,7 +643,7 @@ public class EndlessRunner extends Game {
             String prompt = "Game Over";
             String message = "Press the space bar or the up arrow to start over";
             placeText(prompt, ( this.getWidth() / 2 ) - 50, 50);
-            placeText(message, 80, 70);
+            placeText(message, 220, 70);
             playGameOverSound();
             playMusic(false);
         }
