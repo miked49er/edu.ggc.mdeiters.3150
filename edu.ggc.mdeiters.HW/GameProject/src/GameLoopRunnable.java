@@ -39,14 +39,9 @@ public class GameLoopRunnable implements Runnable {
 
                 Thread.sleep(timeBetweenMoves);
 
-                game.updateGame();
+                game.updateGame(timeBetweenMoves);
 
                 game.render(timeBetweenMoves);
-
-                if ( game.isGameOver() ) {
-
-                    throw new InterruptedException();
-                }
             }
         }
         catch ( InterruptedException ie ) {

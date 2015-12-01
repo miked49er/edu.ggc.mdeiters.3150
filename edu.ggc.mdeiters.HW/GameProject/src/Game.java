@@ -29,7 +29,7 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public abstract class Game extends Scene {
 
-    private ArrayList< KeyCode > input;
+    private ArrayList<KeyCode> input;
     private Group root;
     private Canvas canvas;
     private GraphicsContext gc;
@@ -37,7 +37,7 @@ public abstract class Game extends Scene {
     private Lock gameLock;
 
     private Player player;
-    private ArrayList< Sprite > sprites;
+    private ArrayList<Sprite> sprites;
     private double score;
     private int highScore;
     private boolean gameOver;
@@ -77,10 +77,10 @@ public abstract class Game extends Scene {
      * Method: getInput
      * @return input ArrayList<KeyCode>
      */
-    public ArrayList< KeyCode > getInput() {
+    public ArrayList<KeyCode> getInput() {
 
         gameLock.lock();
-        ArrayList< KeyCode > input = this.input;
+        ArrayList<KeyCode> input = this.input;
         gameLock.unlock();
         return input;
     }
@@ -176,7 +176,7 @@ public abstract class Game extends Scene {
      * Method: getSprites
      * @return sprites ArrayList<Sprite>
      */
-    public ArrayList< Sprite > getSprites() {
+    public ArrayList<Sprite> getSprites() {
         return sprites;
     }
 
@@ -389,9 +389,11 @@ public abstract class Game extends Scene {
 
     /**
      * Method: updateGame
+     * @param time double
+     * @throws InterruptedException
      * Description: Update the sprites in the game
      */
-    public abstract void updateGame();
+    public abstract void updateGame( double time ) throws InterruptedException;
 
     /**
      * Method: render

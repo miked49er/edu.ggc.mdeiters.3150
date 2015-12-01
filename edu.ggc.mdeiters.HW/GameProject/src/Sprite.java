@@ -27,7 +27,7 @@ public class Sprite {
     private boolean visible;
     private boolean solid;
     private boolean harmful;
-    private boolean givenPoint;
+    private boolean ground;
 
     /**
      * Constructor: Sprite
@@ -36,7 +36,7 @@ public class Sprite {
         this.visible = true;
         this.solid = false;
         this.harmful = false;
-        this.givenPoint = false;
+        this.ground = false;
     }
 
     /**
@@ -54,7 +54,7 @@ public class Sprite {
         this.visible = true;
         this.solid = false;
         this.harmful = false;
-        this.givenPoint = false;
+        this.ground = false;
     }
 
     /**
@@ -76,7 +76,7 @@ public class Sprite {
         this.visible = true;
         this.solid = false;
         this.harmful = false;
-        this.givenPoint = false;
+        this.ground = false;
     }
 
     /**
@@ -100,7 +100,7 @@ public class Sprite {
         this.visible = true;
         this.solid = false;
         this.harmful = false;
-        this.givenPoint = false;
+        this.ground = false;
     }
 
     /**
@@ -319,19 +319,19 @@ public class Sprite {
     }
 
     /**
-     * Method: hasGivenPoint
-     * @return givenPoint boolean
+     * Method: isGround
+     * @return ground boolean
      */
-    public boolean hasGivenPoint() {
-        return givenPoint;
+    public boolean isGround() {
+        return ground;
     }
 
     /**
-     * Method: setGivenPoint
-     * @param givenPoint booleans
+     * Method: setGround
+     * @param ground booleans
      */
-    public void setGivenPoint( boolean givenPoint ) {
-        this.givenPoint = givenPoint;
+    public void setGround( boolean ground ) {
+        this.ground = ground;
     }
 
     /**
@@ -354,7 +354,10 @@ public class Sprite {
      */
     public void render( GraphicsContext gc ) {
 
-        gc.drawImage(image, positionX, positionY);
+        if ( visible ) {
+
+            gc.drawImage(image, positionX, positionY);
+        }
     }
 
     /**

@@ -31,7 +31,10 @@ public class Player extends Sprite {
     private boolean jumping;
     private boolean sliding;
     private int lives;
+    private double normalWidth;
     private double normalHeight;
+    private double slidingWidth;
+    private double slidingHeight;
 
     /**
      * Constructor: Player
@@ -81,6 +84,7 @@ public class Player extends Sprite {
         this.slidingImage = slidingImage;
         this.jumping = false;
         this.sliding = false;
+        this.normalWidth = width;
         this.normalHeight = height;
     }
 
@@ -104,6 +108,22 @@ public class Player extends Sprite {
     }
 
     /**
+     * Method: getNormalWidth
+     * @return normalWidth double
+     */
+    public double getNormalWidth() {
+        return normalWidth;
+    }
+
+    /**
+     * Method: setNormalWidth
+     * @param normalWidth double
+     */
+    public void setNormalWidth( double normalWidth ) {
+        this.normalWidth = normalWidth;
+    }
+
+    /**
      * Method: getNormalHeight
      * @return normalHeight double
      */
@@ -119,6 +139,38 @@ public class Player extends Sprite {
     public void setNormalHeight( double normalHeight ) {
         this.normalHeight = normalHeight;
         this.setHeight(normalHeight);
+    }
+
+    /**
+     * Method: getSlidingWidth
+     * @return slidingWidth double
+     */
+    public double getSlidingWidth() {
+        return slidingWidth;
+    }
+
+    /**
+     * Method: setSlidingWidth
+     * @param slidingWidth double
+     */
+    public void setSlidingWidth( double slidingWidth ) {
+        this.slidingWidth = slidingWidth;
+    }
+
+    /**
+     * Method: getSlidingHeight
+     * @return slidingHeight double
+     */
+    public double getSlidingHeight() {
+        return slidingHeight;
+    }
+
+    /**
+     * Method: setSlidingHeight
+     * @param slidingHeight double
+     */
+    public void setSlidingHeight( double slidingHeight ) {
+        this.slidingHeight = slidingHeight;
     }
 
     /**
@@ -352,7 +404,15 @@ public class Player extends Sprite {
 
         sliding = true;
         setImage(slidingImage);
-        setHeight(normalHeight / 2);
+
+        if ( slidingWidth != 0 ) {
+
+            setWidth(slidingWidth);
+        }
+        if ( slidingHeight != 0 ) {
+
+            setHeight(slidingHeight);
+        }
 
         if ( slidingSound != null ) {
 

@@ -1,23 +1,22 @@
 /**
- * Class: SmallObstical
+ * Class: LogTree
  * @author Mike Deiters
  * @version 1.0
- * November 26, 2015
- * ITEC 2110
+ * November 30, 2015
+ * ITEC 3150-01
  *
- * Description: Small obsitcal
+ * Description: Log Tree obstical
  *
- * Purpose: Create a small obsitical
+ * Purpose: Create a Log Tree
  */
-public class LargeObstical extends Sprite {
+public class LogTree extends Sprite {
 
-    public LargeObstical() {
+    public LogTree() {
         super();
         setImage("assets/obsticals/log-pole.png");
         setWidth(24);
         setHeight(48);
         setVisible(true);
-        setSolid(false);
         setHarmful(true);
     }
 }

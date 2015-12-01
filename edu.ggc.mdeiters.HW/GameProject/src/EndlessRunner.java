@@ -28,6 +28,12 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class EndlessRunner extends Game {
 
+    private final int GRASS = 1;
+    private final int SNOW = 2;
+    private final int DESERT = 3;
+    private final int MESA = 4;
+    private final int NETHER = 5;
+
     private GameLauncher launcher;
     private boolean pause;
 
@@ -47,83 +53,398 @@ public class EndlessRunner extends Game {
 
     /**
      * Method: generateObsticals
-     * Description: Generate 800 cordinates of obsticals
+     * @param toGenerate int Number of cordinates to generate
+     * @param biome int the background to determine which obsitcals are being generated
+     * Description: Generate toGenerate number of cordinates of obsticals
      */
-    public void generateObsticals() {
+    private void generateObsticals( int toGenerate, int biome ) {
 
         int stage = 0;
         double x = this.getCanvas().getWidth();
-        double y = this.getCanvas().getHeight();
+        double y = getSprites().get(0).getPositionY();
 
-        while ( stage < 800 ) {
+        while ( stage < toGenerate ) {
 
             int obstical;
 
             if ( getScore() < 400 ) {
 
-                obstical = (int) ( Math.random() * 256 ) % 6;
+                obstical = (int) ( Math.random() * 256 ) % 5;
             }
             else {
 
                 obstical = (int) ( Math.random() * 256 ) % 10;
             }
-            int distance = (int) ( Math.random() * 342 ) % 500 + 200;
+            int distance = (int) ( Math.random() * 342 ) % 400 + 200;
             x += distance;
             stage += distance;
             Sprite sprite;
 
             switch ( obstical ) {
-                case 0: // Small Obstical
-                    sprite = new SmallObstical();
+
+                case 0: // Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - sprite.getHeight());
                     break;
-                case 1: // Small Obstical
-                    sprite = new SmallObstical();
+                case 1: // Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - sprite.getHeight());
                     break;
-                case 2: // Small Obstical
-                    sprite = new SmallObstical();
+                case 2: // Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - sprite.getHeight());
                     break;
-                case 3: // Small Obstical
-                    sprite = new SmallObstical();
+                case 3: // Wall
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new LogTree();
+                            break;
+                        case SNOW:
+                            sprite = new LogTree();
+                            break;
+                        case DESERT:
+                            sprite = new CactusTall();
+                            break;
+                        case MESA:
+                            sprite = new CactusTall();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrickWall();
+                            break;
+                        default: // Grass
+                            sprite = new LogTree();
+                            break;
+                    }
                     sprite.setPositionY(y - sprite.getHeight());
                     break;
-                case 4: // Large Obstical
-                    sprite = new LargeObstical();
+                case 4: // Wall
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new LogTree();
+                            break;
+                        case SNOW:
+                            sprite = new LogTree();
+                            break;
+                        case DESERT:
+                            sprite = new CactusTall();
+                            break;
+                        case MESA:
+                            sprite = new CactusTall();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrickWall();
+                            break;
+                        default: // Grass
+                            sprite = new LogTree();
+                            break;
+                    }
                     sprite.setPositionY(y - sprite.getHeight());
                     break;
-                case 5: // Large Obstical
-                    sprite = new LargeObstical();
+                case 5: // Stack
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new LogStack();
+                            break;
+                        case SNOW:
+                            sprite = new LogStack();
+                            break;
+                        case DESERT:
+                            sprite = new CactusTall();
+                            break;
+                        case MESA:
+                            sprite = new CactusTall();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrickStack();
+                            break;
+                        default: // Grass
+                            sprite = new LogStack();
+                            break;
+                    }
                     sprite.setPositionY(y - sprite.getHeight());
                     break;
-                case 6: // Medium Flying Obstical
-                    sprite = new SmallObstical();
+                case 6: // Floating Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - ( sprite.getHeight() * 2 ));
                     break;
-                case 7: // Medium Flying Obstical
-                    sprite = new SmallObstical();
+                case 7: // Floating Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - ( sprite.getHeight() * 2 ));
                     break;
-                case 8: // High Flying Obstical
-                    sprite = new SmallObstical();
+                case 8: // High Floating Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - ( sprite.getHeight() * 3 ));
                     break;
-                case 9: // High Flying Obstical
-                    sprite = new SmallObstical();
+                case 9: // High Floating Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - ( sprite.getHeight() * 3 ));
                     break;
-                default: // Small Obstical
-                    sprite = new SmallObstical();
+                default: // Block
+
+                    switch ( biome ) {
+
+                        case GRASS:
+                            sprite = new Log();
+                            break;
+                        case SNOW:
+                            sprite = new Log();
+                            break;
+                        case DESERT:
+                            sprite = new Cactus();
+                            break;
+                        case MESA:
+                            sprite = new Cactus();
+                            break;
+                        case NETHER:
+                            sprite = new NetherBrick();
+                            break;
+                        default: // Grass
+                            sprite = new Log();
+                            break;
+                    }
                     sprite.setPositionY(y - sprite.getHeight());
                     break;
             }
 
             sprite.setPositionX(x);
-            ;
+
+            if ( biome == DESERT || biome == MESA ) {
+
+                sprite.setPositionY(y - sprite.getHeight());
+            }
+
             stage += sprite.getWidth();
-            addSprite(sprite);
+
+            if ( stage < toGenerate ) {
+
+                addSprite(sprite);
+            }
         }
+    }
+
+    /**
+     * Method: generateStage
+     * Description: Generate the stage assets
+     */
+    public void generateStage( boolean firstGenerate ) {
+
+        int stage = 0;
+        int biome = 0;
+
+        if ( getScore() > 200 ) {
+
+            stage = (int) ( getScore() / 200 ) % 5;
+        }
+
+        int toGenerate = 0;
+        double x = getCanvas().getWidth();
+        double y = getCanvas().getHeight();
+
+        if ( firstGenerate ) {
+
+            double initX = 0;
+            while ( initX < getCanvas().getWidth() ) {
+
+                Grass grass = new Grass();
+                grass.setPositionX(initX);
+                grass.setPositionY(y - grass.getHeight());
+
+                initX += grass.getWidth();
+
+                addSprite(grass);
+            }
+        }
+
+        for ( int i = 0; i < 3; i++ ) {
+
+            Sprite background = null;
+
+            switch ( stage ) {
+                case 0:
+                    background = new Grass();
+                    biome = 1;
+                    break;
+                case 1:
+                    background = new Snow();
+                    biome = 2;
+                    break;
+                case 2:
+                    background = new Desert();
+                    biome = 3;
+                    break;
+                case 3:
+                    background = new Mesa();
+                    biome = 4;
+                    break;
+                case 4:
+                    background = new Nether();
+                    biome = 5;
+                    break;
+            }
+
+            background.setPositionX(x);
+            background.setPositionY(y - background.getHeight());
+
+            x += background.getWidth();
+            toGenerate += background.getWidth();
+
+            addSprite(background);
+        }
+
+        generateObsticals(toGenerate, biome);
     }
 
     /**
@@ -145,7 +466,7 @@ public class EndlessRunner extends Game {
      */
     public void actions() {
 
-        this.setOnKeyPressed(new EventHandler< KeyEvent >() {
+        this.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle( KeyEvent event ) {
 
@@ -169,7 +490,7 @@ public class EndlessRunner extends Game {
             }
         });
 
-        this.setOnKeyReleased(new EventHandler< KeyEvent >() {
+        this.setOnKeyReleased(new EventHandler<KeyEvent>() {
             @Override
             public void handle( KeyEvent event ) {
 
@@ -185,13 +506,13 @@ public class EndlessRunner extends Game {
      * Method: updateGame
      * Description: Update the sprites in the game
      */
-    public void updateGame() {
+    public void updateGame( double time ) throws InterruptedException {
 
         // game logic
 
         if ( ( getInput().contains(KeyCode.UP) || getInput().contains(KeyCode.SPACE) ) && !getPlayer().isJumping() ) {
 
-            getPlayer().jump(-80);
+            getPlayer().jump(-105);
         }
         if ( getInput().contains(KeyCode.DOWN) && !getPlayer().isJumping() ) {
 
@@ -201,15 +522,18 @@ public class EndlessRunner extends Game {
 
             pause = true;
         }
-        if ( getPlayer().getPositionY() + getPlayer().getHeight() == this.getHeight() ) {
-
-            getPlayer().setJumping(false);
-        }
+//        if ( getPlayer().getPositionY() + getPlayer().getHeight() == this.getHeight() ) {
+//
+//            getPlayer().setJumping(false);
+//        }
         if ( !getInput().contains(KeyCode.DOWN) ) {
 
             getPlayer().setSliding(false);
+            getPlayer().setWidth(getPlayer().getNormalWidth());
             getPlayer().setHeight(getPlayer().getNormalHeight());
         }
+
+        getPlayer().update(time);
 
         // collision detection
 
@@ -217,11 +541,19 @@ public class EndlessRunner extends Game {
 
             Sprite sprite = getSprites().get(i);
 
-            if ( sprite.isSolid() ) {
+            if ( getPlayer().intersects(sprite) ) {
 
-                if ( getPlayer().intersects(sprite) && sprite.isHarmful() ) {
+                if ( sprite.isSolid() ) {
+
+                    getPlayer().setJumping(false);
+                    getPlayer().setPositionY(sprite.getPositionY() - getPlayer().getHeight());
+                    getPlayer().setVelocityY(0);
+                }
+
+                if ( sprite.isHarmful() ) {
 
                     setGameOver(true);
+                    throw new InterruptedException();
                 }
             }
 
@@ -229,34 +561,34 @@ public class EndlessRunner extends Game {
 
             if ( getScore() >= 2000 ) {
 
-                sprite.setVelocity(-120, 0);
+                sprite.setVelocityX(-120);
             }
             else if ( getScore() >= 1500 ) {
 
-                sprite.setVelocity(-100, 0);
+                sprite.setVelocityX(-100);
             }
             else if ( getScore() >= 1000 ) {
 
-                sprite.setVelocity(-90, 0);
+                sprite.setVelocityX(-90);
             }
             else if ( getScore() >= 600 ) {
 
-                sprite.setVelocity(-80, 0);
+                sprite.setVelocityX(-80);
             }
             else if ( getScore() >= 300 ) {
 
-                sprite.setVelocity(-70, 0);
+                sprite.setVelocityX(-70);
             }
             else {
 
-                sprite.setVelocity(-60, 0);
+                sprite.setVelocityX(-60);
             }
 
             if ( i == getSprites().size() - 1 ) {
 
                 if ( sprite.getPositionX() + sprite.getWidth() < this.getWidth() ) {
 
-                    generateObsticals();
+                    generateStage(false);
                 }
             }
         }
@@ -273,19 +605,6 @@ public class EndlessRunner extends Game {
 
         if ( !pause ) {
 
-            getPlayer().update(time);
-
-            // Scene border detection
-
-            if ( getPlayer().getPositionY() < 0 ) {
-                getPlayer().setPositionY(0);
-                getPlayer().setVelocityY(0);
-            }
-            if ( getPlayer().getPositionY() + getPlayer().getHeight() > getCanvas().getHeight() ) {
-                getPlayer().setPositionY(getCanvas().getHeight() - getPlayer().getHeight());
-                getPlayer().setVelocityY(0);
-            }
-
             getGc().clearRect(0, 0, this.getWidth(), this.getHeight());
 
             for ( Sprite sprite : getSprites() ) {
@@ -295,8 +614,8 @@ public class EndlessRunner extends Game {
 
             String highScoreTxt = "High Score: " + getHighScore();
             String scoreTxt = "Score: " + (int) getScore();
-            placeText(highScoreTxt, this.getWidth() - 150, 20);
-            placeText(scoreTxt, this.getWidth() - 103, 40);
+            placeText(highScoreTxt, this.getWidth() - 170, 20);
+            placeText(scoreTxt, this.getWidth() - 123, 40);
         }
         else {
 
@@ -305,9 +624,9 @@ public class EndlessRunner extends Game {
                     "over the obsticals, and press down arrow\n" +
                     "to slide under obsitcals.";
             String escape = "Press ESC to exit";
-            placeText(prompt, ( this.getWidth() / 2 ) - 50, 70);
-            placeText(message, 80, 110);
-            placeText(escape, 170, 200);
+            placeText(prompt, ( this.getWidth() / 2 ) - 50, 40);
+            placeText(message, 80, 70);
+            placeText(escape, 10, 40);
 
             throw new InterruptedException();
         }
@@ -319,12 +638,15 @@ public class EndlessRunner extends Game {
      */
     public void gameOver() {
 
-        String prompt = "Game Over";
-        String message = "Press the space bar or the up arrow to start over";
-        placeText(prompt, ( this.getWidth() / 2 ) - 50, 70);
-        placeText(message, 80, 110);
-        playGameOverSound();
-        playMusic(false);
+        if ( isGameOver() ) {
+
+            String prompt = "Game Over";
+            String message = "Press the space bar or the up arrow to start over";
+            placeText(prompt, ( this.getWidth() / 2 ) - 50, 50);
+            placeText(message, 80, 70);
+            playGameOverSound();
+            playMusic(false);
+        }
     }
 
     /**
@@ -335,7 +657,7 @@ public class EndlessRunner extends Game {
 
         clearSprites();
         clearScore();
-        generateObsticals();
+        generateStage(true);
         setGameOver(false);
         stopGameOverSound();
         playMusic(true);

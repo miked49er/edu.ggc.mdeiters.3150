@@ -13,11 +13,11 @@ public class SmallObstical extends Sprite {
 
     public SmallObstical() {
         super();
-        setImage("image/Hearts_2.png");
-        setWidth(20);
-        setHeight(30);
+        setImage("assets/obsticals/log.png");
+        setWidth(24);
+        setHeight(24);
         setVisible(true);
-        setSolid(true);
+        setSolid(false);
         setHarmful(true);
     }
 }
